@@ -1,0 +1,49 @@
+{
+  "name": "pipeline-dashboard",
+  "version": "1.0.0",
+  "description": "Simple dashboard for pipelines on AWS",
+  "main": "index.js",
+  "config": {
+    "region": "us-east-1",
+    "staging_bucket": "pipeline-dashboard",
+    "stack_name": "pipeline-dashboard"
+  },
+  "scripts": {
+    "bucket": "npm run bucket:create && npm run bucket:gen-policy && npm run bucket:put-policy",
+    "bucket:create": "(aws s3 ls s3://${npm_package_config_staging_bucket}-${npm_package_config_region} || aws s3 mb --region ${npm_package_config_region} s3://${npm_package_config_staging_bucket}-${npm_package_config_region})",
+    "bucket:gen-policy": "BUCKET_NAME=${npm_package_config_staging_bucket}-${npm_package_config_region} eval \"cat <<EOF\n$(< bucket-policy.json)\nEOF\" > .out/bucket-policy.json",
+    "bucket:put-policy": "aws s3api put-bucket-policy --bucket ${npm_package_config_staging_bucket}-${npm_package_config_region} --policy file://.out/bucket-policy.json",
+
+    "package": "npm run package:cfn && npm run package:template",
+    "package:cfn": "mkdir -p .out && aws cloudformation package --template-file template.yml --s3-bucket ${npm_package_config_staging_bucket}-${npm_package_config_region} --output-template-file .out/template.yml",
+    "package:template": "aws s3 cp .out/template.yml s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml",
+
+    "stage": "npm run bucket && npm run package",
+
+    "deploy": "aws s3 cp s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml .out/template.yml && aws cloudformation deploy --template-file .out/template.yml --stack-name $npm_package_config_stack_name --capabilities CAPABILITY_NAMED_IAM --region $npm_package_config_region ",
+
+    "test": "node ./node_modules/jshint/bin/jshint index.js src/*.js && node ./node_modules/mocha/bin/_mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stelligent/pipeline-dashboard.git"
+  },
+  "author": "Casey Lee <cplee@nektos.com> (http://www.cplee.org)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stelligent/pipeline-dashboard/issues"
+  },
+  "homepage": "https://github.com/stelligent/pipeline-dashboard#readme",
+  "devDependencies": {
+    "aws-sdk-mock": "^1.7.0",
+    "chai": "^4.1.2",
+    "jshint": "^2.9.5",
+    "lambda-tester": "^3.1.0",
+    "mocha": "^4.0.1",
+    "sinon": "^4.0.1",
+    "sinon-chai": "^2.14.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.138.0"
+  }
+}

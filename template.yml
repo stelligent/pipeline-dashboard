@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: 'AWS::Serverless-2016-10-31'
+Description: 'Create pipeline-dashboard application.'
+Resources:
+  EventHandlerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub pipeline-dashboard-event-handler-role-${AWS::Region}
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: 'cloudwatch-access'
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+            - cloudwatch:PutMetricData
+      - PolicyName: 'codepipeline-access'
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+            - codepipeline:ListPipelineExecutions
+      - PolicyName: 'logs-access'
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:DescribeLogGroups
+            - logs:DescribeLogStreams
+            - logs:PutLogEvents
+  DashboardGeneratorRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub pipeline-dashboard-generator-role-${AWS::Region}
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+          Action:
+          - sts:AssumeRole
+      Path: /
+      Policies:
+      - PolicyName: 'cloudwatch-access'
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+            - cloudwatch:ListMetrics
+            - cloudwatch:GetDashboard
+            - cloudwatch:PutDashboard
+            - cloudwatch:DeleteDashboards
+      - PolicyName: 'logs-access'
+        PolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Resource: '*'
+            Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:DescribeLogGroups
+            - logs:DescribeLogStreams
+            - logs:PutLogEvents
+  EventHandlerFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: pipeline-dashboard-event-handler
+      Description: Create CloudWatch metrics from CodePipeline events
+      Handler: index.handlePipelineEvent
+      Runtime: nodejs6.10
+      CodeUri: .
+      Role: !Ref EventHandlerRole
+      Role: !GetAtt EventHandlerRole.Arn
+      Events:
+        PipelineEventRule:
+          Type: CloudWatchEvent
+          Properties:
+            Pattern:
+              source:
+                - "aws.codepipeline"
+              detail-type:
+                - "CodePipeline Pipeline Execution State Change"
+                - "CodePipeline Stage Execution State Change"
+                - "CodePipeline Action Execution State Change"
+  DashboardGeneratorFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      FunctionName: pipeline-dashboard-generator
+      Description: Build CloudWatch dashboard from CloudWatch metrics
+      Handler: index.generateDashboard
+      Runtime: nodejs6.10
+      CodeUri: .
+      Timeout: 60
+      Role: !GetAtt DashboardGeneratorRole.Arn
+      Events:
+        DashboardEventRule:
+          Type: Schedule
+          Properties:
+            Schedule: "cron(*/5 * * * ? *)"
