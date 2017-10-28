@@ -81,7 +81,7 @@ class DashboardGenerator {
         });
 
         return state.cloudwatch.putDashboard({
-            'DashboardName': 'Pipelines',
+            'DashboardName': ('Pipelines-%s' % state.region),
             'DashboardBody': JSON.stringify(dashboard)
         }).promise();
     }
