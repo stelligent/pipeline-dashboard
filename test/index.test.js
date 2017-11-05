@@ -75,7 +75,7 @@ describe( 'handlePipelineEvent', function() {
             pipelineHistory: {
                 'pipelineExecutionSummaries': [
                     {
-                        'pieplineExecutionId': 'xxx',
+                        'pipelineExecutionId': 'xxx',
                         'startTime': new Date(1492830907000),
                     }
                 ]
@@ -205,7 +205,183 @@ describe( 'handlePipelineEvent', function() {
                 }
             },
             metrics: []
-        }
+        },
+        {
+            description: "pipeline with RedTime",
+            pipelineHistory: {
+                'pipelineExecutionSummaries': [
+                    {
+                        'pipelineExecutionId': 'xxx',
+                        'status': 'Succeeded',
+                        'startTime': new Date(1492830907000),
+                        'lastUpdateTime': new Date(1492831007000),
+                    },
+                    {
+                        'pipelineExecutionId': 'yyy',
+                        'status': 'Failed',
+                        'startTime': new Date(1492830807000),
+                    },
+                    {
+                        'pipelineExecutionId': 'zzz',
+                        'status': 'Failed',
+                        'startTime': new Date(1492830507000),
+                        'lastUpdateTime': new Date(1492830607000),
+                    },
+                    {
+                        'pipelineExecutionId': 'aaa',
+                        'status': 'Succeeded',
+                    }
+                ]
+            },
+            event: {
+                'time': '2017-04-22T03:16:47Z',
+                'detail-type': 'CodePipeline Pipeline Execution State Change',
+                'detail': {
+                    'pipeline': 'my-pipeline',
+                    'execution-id': 'xxx',
+                    'state': 'SUCCEEDED',
+                }
+            },
+            metrics: [{
+                "Namespace": "Pipeline",
+                "MetricData": [
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "SuccessCount",
+                        "Unit": "Count",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 1,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "RedTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 300,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "CycleTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 100,
+                    }
+                ]
+            }]
+        },
+        {
+            description: "pipeline with GreenTime",
+            pipelineHistory: {
+                'pipelineExecutionSummaries': [
+                    {
+                        'pipelineExecutionId': 'xxx',
+                        'status': 'Failed',
+                        'startTime': new Date(1492830907000),
+                        'lastUpdateTime': new Date(1492831007000),
+                    },
+                    {
+                        'pipelineExecutionId': 'yyy',
+                        'status': 'Succeeded',
+                        'startTime': new Date(1492830807000),
+                    },
+                    {
+                        'pipelineExecutionId': 'zzz',
+                        'status': 'Succeeded',
+                        'startTime': new Date(1492830507000),
+                        'lastUpdateTime': new Date(1492830607000),
+                    },
+                    {
+                        'pipelineExecutionId': 'aaa',
+                        'status': 'Failed',
+                    }
+                ]
+            },
+            event: {
+                'time': '2017-04-22T03:16:47Z',
+                'detail-type': 'CodePipeline Pipeline Execution State Change',
+                'detail': {
+                    'pipeline': 'my-pipeline',
+                    'execution-id': 'xxx',
+                    'state': 'FAILED',
+                }
+            },
+            metrics: [{
+                "Namespace": "Pipeline",
+                "MetricData": [
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "FailureCount",
+                        "Unit": "Count",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 1,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "GreenTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 300,
+                    }
+                ]
+            }]
+        },
+        {
+            description: "pipeline state unchanged",
+            pipelineHistory: {
+                'pipelineExecutionSummaries': [
+                    {
+                        'pipelineExecutionId': 'xxx',
+                        'status': 'Failed',
+                        'startTime': new Date(1492830907000),
+                        'lastUpdateTime': new Date(1492831007000),
+                    },
+                    {
+                        'pipelineExecutionId': 'yyy',
+                        'status': 'Failed',
+                        'startTime': new Date(1492830807000),
+                    },
+                    {
+                        'pipelineExecutionId': 'zzz',
+                        'status': 'Succeeded',
+                        'startTime': new Date(1492830507000),
+                        'lastUpdateTime': new Date(1492830607000),
+                    }
+                ]
+            },
+            event: {
+                'time': '2017-04-22T03:16:47Z',
+                'detail-type': 'CodePipeline Pipeline Execution State Change',
+                'detail': {
+                    'pipeline': 'my-pipeline',
+                    'execution-id': 'xxx',
+                    'state': 'FAILED',
+                }
+            },
+            metrics: [{
+                "Namespace": "Pipeline",
+                "MetricData": [
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "FailureCount",
+                        "Unit": "Count",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 1,
+                    }
+                ]
+            }]
+        },
     ].forEach(scenario => {
         if (scenario.skip) {
             return;

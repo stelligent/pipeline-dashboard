@@ -36,6 +36,7 @@ class DashboardGenerator {
     putDashboard(state) {
         state.pipelineNames = [...new Set(state.pipelineNames)].sort();
         let y=0;
+        let period=60 * 60 * 24 * 30;
         let dashboard = {
             "widgets": state.pipelineNames.map(pipelineName => {
                 return {
@@ -48,22 +49,34 @@ class DashboardGenerator {
                         "view": "singleValue",
                         "metrics": [
                             ["Pipeline", "SuccessCount", "PipelineName", pipelineName, {
+                                "label": "Success Count",
                                 "stat": "Sum",
-                                "period": 2592000
+                                "color": "#2ca02c"
                             }],
-                            [".", "FailureCount", ".", ".", {"stat": "Sum", "period": 2592000}],
-                            [".", "CycleTime", ".", ".", {"period": 2592000, "color": "#9467bd"}],
-                            [".", "RedTime", ".", ".", {
+                            [".", "FailureCount", ".", ".", {
+                                "label": "Failure Count",
                                 "stat": "Sum",
-                                "period": 2592000,
-                                "yAxis": "left",
                                 "color": "#d62728"
                             }],
-                            [".", "GreenTime", ".", ".", {"period": 2592000, "stat": "Sum", "color": "#2ca02c"}]
+                            [".", "CycleTime", ".", ".", {
+                                "label": "Cycle Time",
+                                "stat": "Average",
+                                "color": "#212ebd"
+                            }],
+                            [".", "RedTime", ".", ".", {
+                                "label": "MTTR",
+                                "stat": "Average",
+                                "color": "#d6721b"
+                            }],
+                            [".", "GreenTime", ".", ".", {
+                                "label": "MTBF",
+                                "stat": "Average",
+                                "color": "#a02899"
+                            }]
                         ],
                         "region": state.region,
                         "title": pipelineName,
-                        "period": 300
+                        "period": period
                     }
                 };
             })
@@ -76,7 +89,14 @@ class DashboardGenerator {
             "width": 6,
             "height": 6,
             "properties": {
-                "markdown": "\nAll metrics are calculated over the past 30 days\n\n* **SuccessCount** - count of all successful pipeline executions\n* **FailureCount** - count of all failed pipeline executions\n* **CycleTime** - average pipeline time for successful executions\n* **RedTime** - sum of all time spent with a red pipeline\n* **GreenTime** - sum of all time spent with a green pipeline\n"
+                "markdown": `
+# Metric Details
+* **Success Count** - count of successful pipeline executions
+* **Failure Count** - count of failed pipeline executions
+* **Cycle Time** - average pipeline runtime for successful executions
+* **MTTR** - Mean time to pipeline recovery
+* **MTBF** - Mean time between pipeline failures
+`
             }
         });
 
