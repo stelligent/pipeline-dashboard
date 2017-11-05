@@ -35,7 +35,7 @@ class DashboardGenerator {
 
     putDashboard(state) {
         state.pipelineNames = [...new Set(state.pipelineNames)].sort();
-        let y=0;
+        let y=0; // leave space for the legend on first row
         let period=60 * 60 * 24 * 30;
         let dashboard = {
             "widgets": state.pipelineNames.map(pipelineName => {
@@ -43,7 +43,7 @@ class DashboardGenerator {
                     "type": "metric",
                     "x": 0,
                     "y": (y += 3),
-                    "width": 18,
+                    "width": 24,
                     "height": 3,
                     "properties": {
                         "view": "singleValue",
@@ -82,22 +82,42 @@ class DashboardGenerator {
             })
         };
 
-        dashboard.widgets.push({
-            "type": "text",
-            "x": 18,
-            "y": 0,
-            "width": 6,
-            "height": 6,
-            "properties": {
-                "markdown": `
-# Metric Details
-* **Success Count** - count of successful pipeline executions
-* **Failure Count** - count of failed pipeline executions
-* **Cycle Time** - average pipeline runtime for successful executions
-* **MTTR** - Mean time to pipeline recovery
-* **MTBF** - Mean time between pipeline failures
-`
-            }
+
+        let x = 0;
+        [
+            {
+                "title": "Success Count",
+                "description": "count of successful pipeline executions"
+            },
+            {
+                "title": "Failure Count",
+                "description": "count of failed pipeline executions"
+            },
+            {
+                "title": "Cycle Time",
+                "description": "mean runtime for successful executions"
+            },
+            {
+                "title": "MTTR",
+                "description": "mean time to pipeline recovery"
+            },
+            {
+                "title": "MTBF",
+                "description": "mean time between pipeline failures"
+            },
+        ].forEach(l => {
+            dashboard.widgets.push({
+                "type": "text",
+                "x": x,
+                "y": y,
+                "width": 4,
+                "height": 2,
+                "properties": {
+                    "markdown": `### ${l.title}\n${l.description}`
+                }
+            });
+
+            x += 4;
         });
 
         return state.cloudwatch.putDashboard({

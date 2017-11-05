@@ -34,4 +34,4 @@ exports.generateDashboard = (event, context, callback) => {
         .catch(callback);
 };
 
-
+exports.generateDashboard({}, {}, console.error);
