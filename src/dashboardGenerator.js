@@ -43,36 +43,36 @@ class DashboardGenerator {
                     "type": "metric",
                     "x": 0,
                     "y": (y += 3),
-                    "width": 24,
+                    "width": 21,
                     "height": 3,
                     "properties": {
                         "view": "singleValue",
                         "metrics": [
-                            ["Pipeline", "SuccessCount", "PipelineName", pipelineName, {
-                                "label": "Success Count",
-                                "stat": "Sum",
-                                "color": "#2ca02c"
-                            }],
-                            [".", "FailureCount", ".", ".", {
-                                "label": "Failure Count",
-                                "stat": "Sum",
-                                "color": "#d62728"
-                            }],
-                            [".", "CycleTime", ".", ".", {
+                            ["Pipeline", "SuccessCycleTime", "PipelineName", pipelineName, {
                                 "label": "Cycle Time",
                                 "stat": "Average",
                                 "color": "#212ebd"
                             }],
-                            [".", "RedTime", ".", ".", {
-                                "label": "MTTR",
+                            [".", "DeliveryLeadTime", ".", ".", {
+                                "label": "Lead Time",
                                 "stat": "Average",
                                 "color": "#d6721b"
                             }],
                             [".", "GreenTime", ".", ".", {
                                 "label": "MTBF",
                                 "stat": "Average",
+                                "color": "#2ca02c"
+                            }],
+                            [".", "RedTime", ".", ".", {
+                                "label": "MTTR",
+                                "stat": "Average",
+                                "color": "#d62728"
+                            }],
+                            [".", "FailureLeadTime", ".", ".", {
+                                "label": "Feedback Time",
+                                "stat": "Average",
                                 "color": "#a02899"
-                            }]
+                            }],
                         ],
                         "region": state.region,
                         "title": pipelineName,
@@ -86,24 +86,24 @@ class DashboardGenerator {
         let x = 0;
         [
             {
-                "title": "Success Count",
-                "description": "count of successful pipeline executions"
-            },
-            {
-                "title": "Failure Count",
-                "description": "count of failed pipeline executions"
-            },
-            {
                 "title": "Cycle Time",
-                "description": "mean runtime for successful executions"
+                "description": "mean time between successful pipeline executions"
+            },
+            {
+                "title": "Lead Time",
+                "description": "mean lead time from commit to production, including rework"
+            },
+            {
+                "title": "MTBF",
+                "description": "mean time between pipeline failures"
             },
             {
                 "title": "MTTR",
                 "description": "mean time to pipeline recovery"
             },
             {
-                "title": "MTBF",
-                "description": "mean time between pipeline failures"
+                "title": "Feedback Time",
+                "description": "mean lead time for failed pipeline executions"
             },
         ].forEach(l => {
             dashboard.widgets.push({

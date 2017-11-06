@@ -76,7 +76,8 @@ describe( 'handlePipelineEvent', function() {
                 'pipelineExecutionSummaries': [
                     {
                         'pipelineExecutionId': 'xxx',
-                        'startTime': new Date(1492830907000),
+                        'startTime': new Date(1492830707000),
+                        'lastUpdateTime': new Date(1492830907000),
                     }
                 ]
             },
@@ -177,7 +178,8 @@ describe( 'handlePipelineEvent', function() {
                 'pipelineExecutionSummaries': [
                     {
                         'pieplineExecutionId': 'xxx',
-                        'startTime': new Date(1492830907000),
+                        'startTime': new Date(1492830707000),
+                        'lastUpdateTime': new Date(1492830907000),
                     }
                 ]
             },
@@ -219,7 +221,8 @@ describe( 'handlePipelineEvent', function() {
                     {
                         'pipelineExecutionId': 'yyy',
                         'status': 'Failed',
-                        'startTime': new Date(1492830807000),
+                        'startTime': new Date(1492830707000),
+                        'lastUpdateTime': new Date(1492830807000),
                     },
                     {
                         'pipelineExecutionId': 'zzz',
@@ -230,6 +233,8 @@ describe( 'handlePipelineEvent', function() {
                     {
                         'pipelineExecutionId': 'aaa',
                         'status': 'Succeeded',
+                        'startTime': new Date(1492830207000),
+                        'lastUpdateTime': new Date(1492830407000),
                     }
                 ]
             },
@@ -261,16 +266,34 @@ describe( 'handlePipelineEvent', function() {
                         "Dimensions": [
                             {Name: "PipelineName", Value: "my-pipeline"},
                         ],
-                        "Value": 300,
+                        "Value": 400,
                     },
                     {
                         "Timestamp": new Date(1492831007000),
-                        "MetricName": "CycleTime",
+                        "MetricName": "SuccessCycleTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 600,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "SuccessLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
                             {Name: "PipelineName", Value: "my-pipeline"},
                         ],
                         "Value": 100,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "DeliveryLeadTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 500,
                     }
                 ]
             }]
@@ -330,7 +353,16 @@ describe( 'handlePipelineEvent', function() {
                         "Dimensions": [
                             {Name: "PipelineName", Value: "my-pipeline"},
                         ],
-                        "Value": 300,
+                        "Value": 400,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "FailureLeadTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 100,
                     }
                 ]
             }]
@@ -378,6 +410,15 @@ describe( 'handlePipelineEvent', function() {
                             {Name: "PipelineName", Value: "my-pipeline"},
                         ],
                         "Value": 1,
+                    },
+                    {
+                        "Timestamp": new Date(1492831007000),
+                        "MetricName": "FailureLeadTime",
+                        "Unit": "Seconds",
+                        "Dimensions": [
+                            {Name: "PipelineName", Value: "my-pipeline"},
+                        ],
+                        "Value": 100,
                     }
                 ]
             }]

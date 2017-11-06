@@ -14,6 +14,7 @@ class PipelineEventHandler {
             .then(this.handleFinalState)
             .then(this.handlePipelineGreenRedTime)
             .then(this.handlePipelineCycleTime)
+            .then(this.handlePipelineLeadTime)
             .then(this.putMetricData);
     }
 
@@ -36,14 +37,25 @@ class PipelineEventHandler {
                                 // first, find current execution
                                 if (e.pipelineExecutionId === executionId) {
                                     pstate.currentExecution = e;
-                                }
-                                // next, if state is different from current, keep it
-                                else if (pstate.currentExecution && e.status !== pstate.currentExecution.status) {
-                                    pstate.priorExecution = e;
-                                }
-                                // finally, if state is same as current, we are done!
-                                else if (pstate.currentExecution && e.status === pstate.currentExecution.status) {
-                                    pstate.isFinal = true;
+                                    pstate.priorSuccessPlusOneExecution = e;
+                                } else if(pstate.currentExecution) {
+                                    // if current exec is success, find prior success and the one right after that success
+                                    if (pstate.currentExecution.status === "Succeeded") {
+                                        if (e.status === 'Succeeded') {
+                                            pstate.priorSuccessExecution = e;
+                                        } else {
+                                            pstate.priorSuccessPlusOneExecution = e;
+                                        }
+                                    }
+
+                                    // next, if state is different from current, keep it
+                                    if (e.status !== pstate.currentExecution.status) {
+                                        pstate.priorStateExecution = e;
+                                    }
+                                    // finally, if state is same as current, we are done!
+                                    else if (e.status === pstate.currentExecution.status) {
+                                        pstate.isFinal = true;
+                                    }
                                 }
                             }
                             return pstate;
@@ -72,9 +84,9 @@ class PipelineEventHandler {
 
     handlePipelineGreenRedTime(state) {
         let currentExecution = state.pipelineState.currentExecution;
-        let priorExecution = state.pipelineState.priorExecution;
-        if(currentExecution && priorExecution) {
-            let duration = durationInSeconds(priorExecution.lastUpdateTime, currentExecution.startTime);
+        let priorStateExecution = state.pipelineState.priorStateExecution;
+        if(currentExecution && priorStateExecution) {
+            let duration = durationInSeconds(priorStateExecution.startTime, currentExecution.startTime);
             if (currentExecution.status === 'Succeeded') {
                 PipelineEventHandler.addMetric(state, 'RedTime', SECONDS, duration);
             } else if (currentExecution.status === 'Failed') {
@@ -86,9 +98,28 @@ class PipelineEventHandler {
 
     handlePipelineCycleTime(state) {
         let currentExecution = state.pipelineState.currentExecution;
+        let priorSuccessExecution = state.pipelineState.priorSuccessExecution;
+        if(currentExecution && currentExecution.status === 'Succeeded' && priorSuccessExecution) {
+            let duration = durationInSeconds(priorSuccessExecution.lastUpdateTime, currentExecution.lastUpdateTime);
+            PipelineEventHandler.addMetric(state, 'SuccessCycleTime', SECONDS, duration);
+        }
+        return state;
+    }
+
+    handlePipelineLeadTime(state) {
+        let currentExecution = state.pipelineState.currentExecution;
         if(currentExecution && currentExecution.status === 'Succeeded') {
-            let duration = durationInSeconds(currentExecution.startTime, state.eventTime);
-            PipelineEventHandler.addMetric(state, 'CycleTime', SECONDS, duration);
+            let duration = durationInSeconds(currentExecution.startTime, currentExecution.lastUpdateTime);
+            PipelineEventHandler.addMetric(state, 'SuccessLeadTime', SECONDS, duration);
+
+            let priorSuccessPlusOneExecution = state.pipelineState.priorSuccessPlusOneExecution;
+            if(state.pipelineState.isFinal && priorSuccessPlusOneExecution) {
+                let leadDuration = durationInSeconds(priorSuccessPlusOneExecution.startTime, currentExecution.lastUpdateTime);
+                PipelineEventHandler.addMetric(state, 'DeliveryLeadTime', SECONDS, leadDuration);
+            }
+        } else if(currentExecution && currentExecution.status === 'Failed') {
+            let duration = durationInSeconds(currentExecution.startTime, currentExecution.lastUpdateTime);
+            PipelineEventHandler.addMetric(state, 'FailureLeadTime', SECONDS, duration);
         }
         return state;
     }
