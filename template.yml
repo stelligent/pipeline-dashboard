@@ -91,7 +91,6 @@ Resources:
       Handler: index.handlePipelineEvent
       Runtime: nodejs6.10
       CodeUri: .
-      Role: !Ref EventHandlerRole
       Role: !GetAtt EventHandlerRole.Arn
       Events:
         PipelineEventRule:
