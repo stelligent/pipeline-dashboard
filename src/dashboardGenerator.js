@@ -39,10 +39,10 @@ class DashboardGenerator {
         let period=60 * 60 * 24 * 30;
         let dashboard = {
             "widgets": state.pipelineNames.map(pipelineName => {
-                return {
+                let widget = {
                     "type": "metric",
                     "x": 0,
-                    "y": (y += 3),
+                    "y": y,
                     "width": 21,
                     "height": 3,
                     "properties": {
@@ -79,6 +79,8 @@ class DashboardGenerator {
                         "period": period
                     }
                 };
+                y += 3;
+                return widget;
             })
         };
 
