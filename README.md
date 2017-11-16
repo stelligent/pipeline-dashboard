@@ -1,6 +1,8 @@
 # Overview
 Simple dashboard built for viewing pipeline metrics in AWS.  Built using CloudWatch dashboards and metrics populated from CloudWatch events that CodePipeline triggers.
 
+For more details, see the blog post [CodePipeline Dashboard](https://github.com/stelligent/pipeline-dashboard)
+
 ![Screen Shot](docs/screen-shot.png)
 
 ## Launch now!
