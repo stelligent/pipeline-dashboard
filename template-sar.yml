@@ -8,7 +8,7 @@ Resources:
       Description: Create CloudWatch metrics from CodePipeline events
       Handler: index.handlePipelineEvent
       Runtime: nodejs6.10
-      CodeUri: .
+      CodeUri: s3://pipeline-dashboard-us-east-1/df9df41fcba07b5e5827f6474128c22f
       Events:
         PipelineEventRule:
           Type: CloudWatchEvent
@@ -39,7 +39,7 @@ Resources:
       Description: Build CloudWatch dashboard from CloudWatch metrics
       Handler: index.generateDashboard
       Runtime: nodejs6.10
-      CodeUri: .
+      CodeUri: s3://pipeline-dashboard-us-east-1/df9df41fcba07b5e5827f6474128c22f
       Timeout: 60
       Role: !GetAtt DashboardGeneratorRole.Arn
       Events:
