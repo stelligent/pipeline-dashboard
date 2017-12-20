@@ -21,18 +21,13 @@ Resources:
                 - "CodePipeline Stage Execution State Change"
                 - "CodePipeline Action Execution State Change"
       Policies:
+      - CloudWatchPutMetricPolicy
       - Version: '2012-10-17'
         Statement:
         - Effect: Allow
           Resource: '*'
           Action:
-          - cloudwatch:PutMetricData
           - codepipeline:ListPipelineExecutions
-          - logs:CreateLogGroup
-          - logs:CreateLogStream
-          - logs:DescribeLogGroups
-          - logs:DescribeLogStreams
-          - logs:PutLogEvents
   PipelineDashboardGenerator:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -41,7 +36,6 @@ Resources:
       Runtime: nodejs6.10
       CodeUri: s3://pipeline-dashboard-us-east-1/df9df41fcba07b5e5827f6474128c22f
       Timeout: 60
-      Role: !GetAtt DashboardGeneratorRole.Arn
       Events:
         DashboardEventRule:
           Type: Schedule
@@ -57,8 +51,3 @@ Resources:
           - cloudwatch:GetDashboard
           - cloudwatch:PutDashboard
           - cloudwatch:DeleteDashboards
-          - logs:CreateLogGroup
-          - logs:CreateLogStream
-          - logs:DescribeLogGroups
-          - logs:DescribeLogStreams
-          - logs:PutLogEvents

@@ -21,6 +21,7 @@ Resources:
                 - "CodePipeline Stage Execution State Change"
                 - "CodePipeline Action Execution State Change"
       Policies:
+      - CloudWatchPutMetricPolicy
       - Version: '2012-10-17'
         Statement:
         - Effect: Allow
@@ -28,11 +29,6 @@ Resources:
           Action:
           - cloudwatch:PutMetricData
           - codepipeline:ListPipelineExecutions
-          - logs:CreateLogGroup
-          - logs:CreateLogStream
-          - logs:DescribeLogGroups
-          - logs:DescribeLogStreams
-          - logs:PutLogEvents
   PipelineDashboardGenerator:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -57,8 +53,3 @@ Resources:
           - cloudwatch:GetDashboard
           - cloudwatch:PutDashboard
           - cloudwatch:DeleteDashboards
-          - logs:CreateLogGroup
-          - logs:CreateLogStream
-          - logs:DescribeLogGroups
-          - logs:DescribeLogStreams
-          - logs:PutLogEvents
