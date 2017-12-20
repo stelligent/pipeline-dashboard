@@ -41,6 +41,43 @@ The list of pipelines in the dashboard cannot be generated dyanmically so anothe
 ![Success 2](docs/pipeline-dashboard-success-2.png)
 *Fig.2 - Pipelines in parallel*
 
+# IAM polices (Serverless Application Repository)
+You will need to manually apply the following inline policies to your IAM roles due to a limitation in the SAM policy templates.  For the EventHandler role, add the following inline policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "codepipeline:ListPipelineExecutions"
+            ],
+            "Resource":  "*"
+        }
+    ]
+}
+```
+
+For the dashboard generator role, add the following inline policy:
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:ListMetrics",
+                "cloudwatch:GetDashboard",
+                "cloudwatch:PutDashboard"
+            ],
+            "Resource":  "*"
+        }
+    ]
+}
+```
+
 
 
 # Development

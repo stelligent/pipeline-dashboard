@@ -50,4 +50,3 @@ Resources:
 #          - cloudwatch:ListMetrics
 #          - cloudwatch:GetDashboard
 #          - cloudwatch:PutDashboard
-#          - cloudwatch:DeleteDashboards
