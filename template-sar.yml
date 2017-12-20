@@ -21,13 +21,13 @@ Resources:
                 - "CodePipeline Stage Execution State Change"
                 - "CodePipeline Action Execution State Change"
       Policies:
-      - CloudWatchPutMetricPolicy
-      - Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Resource: '*'
-          Action:
-          - codepipeline:ListPipelineExecutions
+      - CloudWatchPutMetricPolicy: {}
+#      - Version: '2012-10-17'
+#        Statement:
+#        - Effect: Allow
+#          Resource: '*'
+#          Action:
+#          - codepipeline:ListPipelineExecutions
   PipelineDashboardGenerator:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -42,12 +42,12 @@ Resources:
           Properties:
             Schedule: "cron(*/5 * * * ? *)"
       Policies:
-      - Version: '2012-10-17'
-        Statement:
-        - Effect: Allow
-          Resource: '*'
-          Action:
-          - cloudwatch:ListMetrics
-          - cloudwatch:GetDashboard
-          - cloudwatch:PutDashboard
-          - cloudwatch:DeleteDashboards
+#      - Version: '2012-10-17'
+#        Statement:
+#        - Effect: Allow
+#          Resource: '*'
+#          Action:
+#          - cloudwatch:ListMetrics
+#          - cloudwatch:GetDashboard
+#          - cloudwatch:PutDashboard
+#          - cloudwatch:DeleteDashboards

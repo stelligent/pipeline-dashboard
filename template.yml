@@ -21,7 +21,7 @@ Resources:
                 - "CodePipeline Stage Execution State Change"
                 - "CodePipeline Action Execution State Change"
       Policies:
-      - CloudWatchPutMetricPolicy
+      - CloudWatchPutMetricPolicy: {}
       - Version: '2012-10-17'
         Statement:
         - Effect: Allow
@@ -36,7 +36,6 @@ Resources:
       Runtime: nodejs6.10
       CodeUri: .
       Timeout: 60
-      Role: !GetAtt DashboardGeneratorRole.Arn
       Events:
         DashboardEventRule:
           Type: Schedule
