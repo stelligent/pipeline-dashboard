@@ -27,7 +27,6 @@ Resources:
         - Effect: Allow
           Resource: '*'
           Action:
-          - cloudwatch:PutMetricData
           - codepipeline:ListPipelineExecutions
   PipelineDashboardGenerator:
     Type: 'AWS::Serverless::Function'
