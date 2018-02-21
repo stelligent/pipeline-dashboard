@@ -86,8 +86,7 @@ For the dashboard generator role, add the following inline policy:
 
 To run the unit tests: `npm test`
 
-To stage the lambda code and CloudFormation template: `npm run stage`
-You can change the region via `npm config set pipeline-dashboard:region us-west-2`
+To deploy the CodeBuild project for staging the templates: `aws cloudformation create-stack --stack-name pipeline-dashboard-codebuild --template-body file://codebuild.yml --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=GitHubToken,ParameterValue=<github_access_token>`
 
 To deploy to your account: `npm run deploy`
 You can change the bucket via `npm config set pipeline-dashboard:staging_bucket my-bucket-name`
