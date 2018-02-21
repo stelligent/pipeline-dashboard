@@ -9,8 +9,7 @@ For more details, see the blog post [CodePipeline Dashboard](https://stelligent.
 
 ## Launch now!
 
-Use the **Serverless Application Repository** to deploy in your account: 
-[![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard)
+Use the **Serverless Application Repository** to deploy in your account: [Deploy Now](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard)
 
 Alternatively, you can deploy via CloudFormation directly:
 
