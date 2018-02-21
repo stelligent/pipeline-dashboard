@@ -3,6 +3,10 @@ phases:
   install:
     commands:
       - npm install
+  pre_build:
+    commands:
+      - npm config set pipeline-dashboard:region ${AWS_REGION}
+      - npm config set pipeline-dashboard:staging_bucket ${STAGING_BUCKET_PREFIX}
   build:
     commands:
       - npm test
