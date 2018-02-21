@@ -103,3 +103,10 @@ Resources:
           Principal: '*'
           Action: s3:GetObject
           Resource: !Sub arn:aws:s3:::${StagingBucket}/*
+Outputs:
+  CodeBuildProject:
+    Value: !Sub https://console.aws.amazon.com/codebuild/home?region=${AWS::Region}#/projects/pipeline-dashboard/view
+    Description: CodeBuild project for staging artifacts to the S3 bucket
+  StagingBucket:
+    Value: !Ref StagingBucket
+    Description: S3 bucket for staging the lambda function and CloudFormation template
