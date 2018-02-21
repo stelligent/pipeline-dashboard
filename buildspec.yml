@@ -8,4 +8,4 @@ phases:
       - npm test
   post_build:
     commands:
-      - npm stage
+      - npm run stage
