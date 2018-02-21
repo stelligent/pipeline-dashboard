@@ -3,13 +3,11 @@ phases:
   install:
     commands:
       - npm install
-  pre_build:
-    commands:
-      - npm config set pipeline-dashboard:region ${AWS_REGION}
-      - npm config set pipeline-dashboard:staging_bucket ${STAGING_BUCKET_PREFIX}
   build:
     commands:
       - npm test
   post_build:
     commands:
-      - npm run stage
+      - mkdir -p .out
+      - aws cloudformation package --template-file template.yml --s3-bucket ${STAGING_BUCKET_PREFIX}-${AWS_REGION} --output-template-file .out/template.yml
+      - aws s3 cp .out/template.yml s3://${STAGING_BUCKET_PREFIX}-${AWS_REGION}/template.yml",
