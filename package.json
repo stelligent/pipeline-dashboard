@@ -9,16 +9,12 @@
     "stack_name": "pipeline-dashboard"
   },
   "scripts": {
-    "bucket": "mkdir -p .out && npm run bucket:create && npm run bucket:gen-policy && npm run bucket:put-policy",
-    "bucket:create": "(aws s3 ls s3://${npm_package_config_staging_bucket}-${npm_package_config_region} || aws s3 mb --region ${npm_package_config_region} s3://${npm_package_config_staging_bucket}-${npm_package_config_region})",
-    "bucket:gen-policy": "BUCKET_NAME=${npm_package_config_staging_bucket}-${npm_package_config_region} eval \"cat <<EOF\n$(< bucket-policy.json)\nEOF\" > .out/bucket-policy.json",
-    "bucket:put-policy": "cat .out/bucket-policy.json && aws s3api put-bucket-policy --bucket ${npm_package_config_staging_bucket}-${npm_package_config_region} --policy file://.out/bucket-policy.json",
-
     "package": "npm run package:cfn && npm run package:template",
     "package:cfn": "mkdir -p .out && aws cloudformation package --template-file template.yml --s3-bucket ${npm_package_config_staging_bucket}-${npm_package_config_region} --output-template-file .out/template.yml",
     "package:template": "aws s3 cp .out/template.yml s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml",
 
-    "stage": "npm run bucket && npm run package",
+    "create-codebuild": "aws cloudformation create-stack --region ${npm_package_config_region} --stack-name pipeline-dashboard-codebuild --template-body file://codebuild.yml --capabilities CAPABILITY_NAMED_IAM ",
+    "update-codebuild": "aws cloudformation update-stack --region ${npm_package_config_region} --stack-name pipeline-dashboard-codebuild --template-body file://codebuild.yml --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=GitHubToken,UsePreviousValue=true",
 
     "deploy": "aws s3 cp s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml .out/template.yml && aws cloudformation deploy --template-file .out/template.yml --stack-name $npm_package_config_stack_name --capabilities CAPABILITY_NAMED_IAM --region $npm_package_config_region ",
 
