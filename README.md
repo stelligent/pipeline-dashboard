@@ -53,7 +53,8 @@ You will need to manually apply the following inline policies to your IAM roles 
 1. Go to [IAM Roles](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles/)
 1. Select the IAM role name
 1. Click **Add inline policy**
-1. Click the **JSON** tab and paste the content below (name and save the IAM policy):
+1. Click the **JSON** tab and paste the content below:
+1. Click though the remaining steps to name and save the IAM policy
 
 ```
 {
