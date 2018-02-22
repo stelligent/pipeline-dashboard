@@ -48,7 +48,11 @@ The list of pipelines in the dashboard cannot be generated dyanmically so anothe
 *Fig.2 - Pipelines in parallel*
 
 # IAM polices ([Serverless Application Repository](https://serverlessrepo.aws.amazon.com/applications))
-You will need to manually apply the following inline policies to your IAM roles due to a limitation in the SAM policy templates.  For the EventHandler IAM role (named something like *aws-serverless-repository-PipelineDashboardEventHa...*), add the following inline policy ([IAM Roles](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles/)|**Add inline policy**|**JSON** tab - and past the content below):
+You will need to manually apply the following inline policies to your IAM roles due to a limitation in the SAM policy templates.  For the EventHandler IAM role (named something like *aws-serverless-repository-PipelineDashboardEventHa...*), add the following inline policy using these steps:
+
+1. Go to [IAM Roles](https://console.aws.amazon.com/iam/home?region=us-east-1#/roles/)
+1. Click **Add inline policy**
+1. Click the **JSON** tab and paste the content below:
 
 ```
 {
