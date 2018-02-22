@@ -69,7 +69,7 @@ You will need to manually apply the following inline policies to your IAM roles 
 }
 ```
 
-For the dashboard generator IAM role (named something like *aws-serverless-repository-PipelineDashboardGenerat...*), add the following inline policy:
+For the dashboard generator IAM role (named something like *aws-serverless-repository-PipelineDashboardGenerat...*), add the following inline policy (using the same steps as described above):
 
 ```
 {
