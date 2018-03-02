@@ -1,7 +1,7 @@
 ![badge](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiNVg5akVKeEJHMElHSmYxaXRyQjlMcEJQTUptRFpRcnFPcC8yMlVIdWZ0ZUI2K3JsVzhNQlNGYUpOanlXdWhQWTlTWFg3YXBvTzNuNjZuaUlZMFozMTU0PSIsIml2UGFyYW1ldGVyU3BlYyI6ImhWMVJZeVJCSHc3Z2tLanAiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 # Overview
-Simple dashboard built for viewing pipeline metrics in AWS.  Built using CloudWatch dashboards and metrics populated from CloudWatch events that CodePipeline triggers. You can also deploy this dashboard directly from the AWS Serverless Application Repsository [here](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard).
+Simple dashboard built for viewing pipeline metrics in AWS.  Built using CloudWatch dashboards and metrics populated from CloudWatch events that CodePipeline triggers. You can also deploy this dashboard directly from the AWS Serverless Application Repository [here](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard).
 
 For more details, see the blog post [CodePipeline Dashboard](https://stelligent.com/2017/11/16/codepipeline-dashboard/).
 
