@@ -22,7 +22,8 @@ Resources:
                 - "CodePipeline Action Execution State Change"
       Policies:
       - CloudWatchPutMetricPolicy: {}
-      - CodePipelineReadOnlyPolicy: {}
+      - CodePipelineReadOnlyPolicy: 
+          PipelineName: '*'
   PipelineDashboardGenerator:
     Type: 'AWS::Serverless::Function'
     Properties:
