@@ -1,6 +1,10 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
 Description: 'Create pipeline-dashboard application.'
+Parameters:
+  PipelinePattern:
+    Description: 'The pattern of pipeline names to allow access to describe.  Recommended value: *'
+    Type: String
 Resources:
   PipelineDashboardEventHandler:
     Type: 'AWS::Serverless::Function'
@@ -23,7 +27,7 @@ Resources:
       Policies:
       - CloudWatchPutMetricPolicy: {}
       - CodePipelineReadOnlyPolicy: 
-          PipelineName: '*'
+          PipelineName: !Ref PipelinePattern
   PipelineDashboardGenerator:
     Type: 'AWS::Serverless::Function'
     Properties:
