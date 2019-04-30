@@ -11,7 +11,7 @@ Resources:
     Properties:
       Description: Create CloudWatch metrics from CodePipeline events
       Handler: index.handlePipelineEvent
-      Runtime: nodejs6.10
+      Runtime: nodejs8.10
       CodeUri: .
       Events:
         PipelineEventRule:
@@ -33,7 +33,7 @@ Resources:
     Properties:
       Description: Build CloudWatch dashboard from CloudWatch metrics
       Handler: index.generateDashboard
-      Runtime: nodejs6.10
+      Runtime: nodejs8.10
       CodeUri: .
       Timeout: 60
       Events:
