@@ -2,6 +2,9 @@ version: 0.2
 phases:
   install:
     commands:
+      - curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.32.0/install.sh | bash
+      - . ~/.nvm/nvm.sh
+      - nvm install 8.10.0
       - node -v
       - npm install
       - node -v
