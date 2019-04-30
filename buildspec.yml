@@ -2,7 +2,9 @@ version: 0.2
 phases:
   install:
     commands:
+      - node -v
       - npm install
+      - node -v
   build:
     commands:
       - npm test
