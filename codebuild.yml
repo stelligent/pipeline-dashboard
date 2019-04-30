@@ -4,7 +4,7 @@ Parameters:
   StagingBucketPrefix:
     Type: String
     Description: Prefix for bucket to stage artifact to
-    Default: pipeline-dashboard
+    Default: pipeline-dashboard-node-0811
   GitHubRepo:
     Type: String
     Description: URL for source code
@@ -67,7 +67,7 @@ Resources:
         - Name: STAGING_BUCKET_PREFIX
           Value: !Ref StagingBucketPrefix
         Type: LINUX_CONTAINER
-        Image: aws/codebuild/nodejs:6.3.1
+        Image: aws/codebuild/nodejs:8.11.0
         ComputeType: BUILD_GENERAL1_SMALL
       Name: pipeline-dashboard
       Description: Stage pipeline-dashboard
