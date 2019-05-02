@@ -187,6 +187,10 @@ Resources:
             Resource: "*"
             Effect: Allow
           - Action:
+            - lambda:*
+            Resource: "*"
+            Effect: Allow
+          - Action:
             - s3:GetObject
             - s3:GetObjectVersion
             - s3:GetBucketVersioning
@@ -264,9 +268,9 @@ Resources:
             Branch: !Ref GitHubBranch
             OAuthToken: !Ref GitHubToken
           RunOrder: 1
-      - Name: Deploy
+      - Name: Build
         Actions:
-        - Name: Artifact
+        - Name: BuildLambdaFunction
           ActionTypeId:
             Category: Build
             Owner: AWS
@@ -278,6 +282,19 @@ Resources:
           - Name: DeploymentArtifacts
           Configuration:
             ProjectName: !Ref BuildProject
+          RunOrder: 1
+      - Name: Publish
+        Actions:
+        - Name: PublishToSAR
+          ActionTypeId:
+            Category: Invoke
+            Owner: AWS
+            Version: '1'
+            Provider: Lambda
+          InputArtifacts:
+          - Name: DeploymentArtifacts
+          Configuration:
+            FunctionName: "serverlessrepo-aws-serverles-ServerlessRepoPublish-W1NCVKGAGWLL"
           RunOrder: 1
       ArtifactStore:
         Type: S3
