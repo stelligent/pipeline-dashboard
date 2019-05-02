@@ -83,6 +83,18 @@ Resources:
             Resource: !Sub arn:aws:s3:::${StagingBucket}/*
             Effect: Allow
           - Action:
+            - s3:CreateBucket
+            - s3:ListBucket
+            - s3:PutBucketPolicy
+            Resource: !Sub arn:aws:s3:::${PipelineBucket}
+            Effect: Allow
+          - Action:
+            - s3:GetObject
+            - s3:GetObjectVersion
+            - s3:PutObject
+            Resource: !Sub arn:aws:s3:::${PipelineBucket}/*
+            Effect: Allow
+          - Action:
             - logs:CreateLogGroup
             - logs:CreateLogStream
             - logs:PutLogEvents
@@ -248,7 +260,7 @@ Resources:
           - Name: SourceArtifacts
           Configuration:
             Owner: !Ref GitHubUser
-            Repo: !Ref GitHubRepo
+            Repo: !Ref GitHubRepoCPL
             Branch: !Ref GitHubBranch
             OAuthToken: !Ref GitHubToken
           RunOrder: 1
@@ -265,7 +277,7 @@ Resources:
           OutputArtifacts:
           - Name: DeploymentArtifacts
           Configuration:
-            ProjectName: !Ref CodeBuildDeploySite
+            ProjectName: !Ref BuildProject
           RunOrder: 1
       ArtifactStore:
         Type: S3
