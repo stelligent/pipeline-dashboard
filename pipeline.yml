@@ -103,7 +103,6 @@ Resources:
             - logs:PutLogEvents
             Effect: Allow
             Resource: '*'
-
   BuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
@@ -149,26 +148,6 @@ Resources:
           Principal: '*'
           Action: s3:GetObject
           Resource: !Sub arn:aws:s3:::${StagingBucket}/*
-  CodeBuildRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-        - Effect: Allow
-          Principal:
-            Service:
-            - codebuild.amazonaws.com
-          Action:
-          - sts:AssumeRole
-      Path: "/"
-      Policies:
-      - PolicyName: codebuild-service
-        PolicyDocument:
-          Statement:
-          - Effect: Allow
-            Action: "*"
-            Resource: "*"
-          Version: '2012-10-17'
   CodePipelineRole:
     Type: AWS::IAM::Role
     Properties:
@@ -211,44 +190,9 @@ Resources:
             Resource: "*"
             Effect: Allow
           Version: '2012-10-17'
-  SiteBucket:
-    Type: AWS::S3::Bucket
-    DeletionPolicy: Delete
-    Properties:
-      AccessControl: PublicRead
-      BucketName: !Ref SiteBucketName
-      WebsiteConfiguration:
-        IndexDocument: index.html
   PipelineBucket:
     Type: AWS::S3::Bucket
     DeletionPolicy: Delete
-  CodeBuildDeploySite:
-    Type: AWS::CodeBuild::Project
-    DependsOn: CodeBuildRole
-    Properties:
-      Name: !Sub ${AWS::StackName}-DeploySite
-      Description: Deploy site to S3
-      ServiceRole: !GetAtt CodeBuildRole.Arn
-      Artifacts:
-        Type: CODEPIPELINE
-      Environment:
-        Type: !Ref BuildType
-        ComputeType: !Ref BuildComputeType
-        Image: !Sub ${BuildImage}
-      Source:
-        Type: CODEPIPELINE
-        BuildSpec: !Sub |
-          version: 0.1
-          phases:
-            post_build:
-              commands:
-                - aws s3 cp --recursive --acl public-read ./samples s3://${SiteBucketName}/samples 
-                - aws s3 cp --recursive --acl public-read ./html s3://${SiteBucketName}/ 
-          artifacts:
-            type: zip
-            files:
-              - ./html/index.html
-      TimeoutInMinutes: 10
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
@@ -295,7 +239,7 @@ Resources:
             Version: '1'
             Provider: Lambda
           InputArtifacts:
-          - Name: DeploymentArtifacts
+          - Name: SourceArtifacts
           Configuration:
             FunctionName: !Ref SARFunctionName
           RunOrder: 1
