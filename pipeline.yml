@@ -106,7 +106,6 @@ Resources:
   BuildProject:
     Type: AWS::CodeBuild::Project
     Properties:
-      BadgeEnabled: true 
       Environment:
         EnvironmentVariables:
         - Name: STAGING_BUCKET_PREFIX
