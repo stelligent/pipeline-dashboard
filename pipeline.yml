@@ -20,10 +20,6 @@ Parameters:
     Type: String
     Description: GitHub User
     Default: "stelligent"
-  GitHubRepo:
-    Type: String
-    Description: GitHub Repo to pull from. Only the Name. not the URL
-    Default: "devops-essentials"
   GitHubRepoCPL:
     Type: String
     Description: GitHub Repo to pull from. Only the Name. not the URL
@@ -77,24 +73,28 @@ Resources:
             - s3:CreateBucket
             - s3:ListBucket
             - s3:PutBucketPolicy
+            - lambda:*
             Resource: !Sub arn:aws:s3:::${StagingBucket}
             Effect: Allow
           - Action:
             - s3:GetObject
             - s3:GetObjectVersion
             - s3:PutObject
+            - lambda:*
             Resource: !Sub arn:aws:s3:::${StagingBucket}/*
             Effect: Allow
           - Action:
             - s3:CreateBucket
             - s3:ListBucket
             - s3:PutBucketPolicy
+            - lambda:*
             Resource: !Sub arn:aws:s3:::${PipelineBucket}
             Effect: Allow
           - Action:
             - s3:GetObject
             - s3:GetObjectVersion
             - s3:PutObject
+            - lambda:*  
             Resource: !Sub arn:aws:s3:::${PipelineBucket}/*
             Effect: Allow
           - Action:
