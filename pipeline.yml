@@ -118,14 +118,7 @@ Resources:
       Description: Stage pipeline-dashboard
       ServiceRole: !GetAtt BuildRole.Arn
       Source:
-        Auth: 
-          !If
-          - HasGitHubToken
-          - Type: OAUTH
-            Resource: !Ref GitHubToken
-          - !Ref AWS::NoValue
-        Type: GITHUB
-        Location: !Ref GitHubRepoCB
+        Type: CODEPIPELINE
       # should be true, but webhook from CFN was failing?!
       #Triggers:
       #  Webhook: true 
