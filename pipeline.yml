@@ -2,6 +2,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Pipeline using CodePipeline and CodeBuild for continuous delivery of a single-page application to S3
 Parameters:
+  SARFunctionName:
+    Type: String
+    Description: Name of the Lambda Function used for deploying to SAR
   StagingBucketPrefix:
     Type: String
     Description: Prefix for bucket to stage artifact to
@@ -294,7 +297,7 @@ Resources:
           InputArtifacts:
           - Name: DeploymentArtifacts
           Configuration:
-            FunctionName: "serverlessrepo-aws-serverles-ServerlessRepoPublish-W1NCVKGAGWLL"
+            FunctionName: !Ref SARFunctionName
           RunOrder: 1
       ArtifactStore:
         Type: S3
