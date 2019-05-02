@@ -9,7 +9,7 @@ Resources:
   PipelineDashboardEventHandler:
     Type: 'AWS::Serverless::Function'
     Properties:
-      Description: Create CloudWatch metrics from CodePipeline events
+      Description: Create CloudWatch metrics from AWS CodePipeline events
       Handler: index.handlePipelineEvent
       Runtime: nodejs8.10
       CodeUri: s3://pipeline-dashboard-us-east-1/315f18bc9c418ff5ad61832ae33547c8
