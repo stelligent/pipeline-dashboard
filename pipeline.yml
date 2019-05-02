@@ -130,7 +130,7 @@ Resources:
       #Triggers:
       #  Webhook: true 
       Artifacts:
-        Type: NO_ARTIFACTS
+        Type: CODEPIPELINE
   StagingBucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -239,7 +239,7 @@ Resources:
             Version: '1'
             Provider: Lambda
           InputArtifacts:
-          - Name: SourceArtifacts
+          - Name: DeploymentArtifacts
           Configuration:
             FunctionName: !Ref SARFunctionName
           RunOrder: 1
