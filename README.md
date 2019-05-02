@@ -1,4 +1,4 @@
-![badge](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiMEVrWGpOSGkzZUhFekIvS29EWDc0UkZFSEg3SFdBOXNzQXkwV1J2dzlNVzJZZkM2ODZwUlNjU1VnbWFJUVpDZkxHcDkvRFRicit5SnBlaWpQWlRia3FvPSIsIml2UGFyYW1ldGVyU3BlYyI6IkdUTW1lM1dZV3FBcEpERFkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+![badge](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoib3JzcXVySEROYTYxV3JTZ0grb09vRDZIemxENG9XT0dnVGZlWVM3TmsrK0k1Y2dyTWQzRnJVQ3gvS3Z3NVBXRzhZS3daMnhuQXBSLzZsM2UzRnhWYUlvPSIsIml2UGFyYW1ldGVyU3BlYyI6InlBUm14d2pEQ3NiUG90OHkiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
 # Overview
 Simple dashboard built for viewing pipeline metrics in AWS.  Built using CloudWatch dashboards and metrics populated from CloudWatch events that CodePipeline triggers. You can also deploy this dashboard directly from the AWS Serverless Application Repository [here](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard).
@@ -15,7 +15,7 @@ Alternatively, you can deploy via CloudFormation directly:
 
 | us-east-1 | us-west-2 |
 | --------- | --------- |
-| [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3.amazonaws.com/pipeline-dashboard-node-0811-us-east-1/template.yml) | [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3-us-west-2.amazonaws.com/pipeline-dashboard-us-west-2/template.yml) |
+| [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3.amazonaws.com/pipeline-dashboard-us-east-1/template.yml) | [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3-us-west-2.amazonaws.com/pipeline-dashboard-us-west-2/template.yml) |
 
 # Architecture
 
