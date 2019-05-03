@@ -230,8 +230,7 @@ Resources:
             Owner: AWS
             Version: '1'
             Provider: Lambda
-          InputArtifacts:
-          - Name: BuildArtifact
+          - InputArtifacts: []
           Configuration:
             FunctionName: !Ref SARFunctionName
           RunOrder: 1
