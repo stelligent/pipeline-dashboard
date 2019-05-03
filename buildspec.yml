@@ -7,8 +7,8 @@ phases:
   build:
     commands:
       - npm test
-      - pip install --upgrade pip
-      - pip install pipenv --user
+      - sudo pip install --upgrade pip
+      - sudo pip install pipenv --user
       - pipenv install awscli aws-sam-cli
       - pipenv run sam package --template-file template.yml --s3-bucket ${STAGING_BUCKET_PREFIX}-${AWS_REGION} --output-template-file packaged-template.yml
 artifacts:
