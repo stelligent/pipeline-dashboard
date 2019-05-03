@@ -218,7 +218,7 @@ Resources:
           InputArtifacts:
           - Name: SourceArtifacts
           OutputArtifacts:
-          - Name: DeploymentArtifacts
+          - Name: BuildArtifact
           Configuration:
             ProjectName: !Ref BuildProject
           RunOrder: 1
@@ -231,7 +231,7 @@ Resources:
             Version: '1'
             Provider: Lambda
           InputArtifacts:
-          - Name: DeploymentArtifacts
+          - Name: BuildArtifact
           Configuration:
             FunctionName: !Ref SARFunctionName
           RunOrder: 1

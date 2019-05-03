@@ -7,13 +7,10 @@ phases:
   build:
     commands:
       - npm test
-  post_build:
-    commands:
-      - mkdir -p .out
-      - aws cloudformation package --template-file template.yml --s3-bucket ${STAGING_BUCKET_PREFIX}-${AWS_REGION} --output-template-file .out/template.yml
-      - aws s3 cp .out/template.yml s3://${STAGING_BUCKET_PREFIX}-${AWS_REGION}/template.yml
+      - pip install --upgrade pip
+      - pip install pipenv --user
+      - pipenv install awscli aws-sam-cli
+      - pipenv run sam package --template-file template.yml --s3-bucket ${STAGING_BUCKET_PREFIX}-${AWS_REGION} --output-template-file packaged-template.yml
 artifacts:
-  type: zip
   files:
-    - .out/template.yml
-    
+    - packaged-template.yml
