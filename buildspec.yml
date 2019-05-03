@@ -2,16 +2,11 @@ version: 0.2
 phases:
   install:
     commands:
-      - npm install
-      - node -v
-  build:
-    commands:
-      - npm test
-      - python -v
-      - sudo pip install --upgrade pip
-      - sudo pip install pipenv --user
-      - pipenv install awscli aws-sam-cli
-      - pipenv run sam package --template-file template.yml --s3-bucket ${STAGING_BUCKET_PREFIX}-${AWS_REGION} --output-template-file packaged-template.yml
+      - npm install time
+      - export BUCKET=pipeline-dashboard-us-east-1
+      - aws cloudformation package --template-file template.yml --s3-bucket $BUCKET --output-template-file outputtemplate.yaml
 artifacts:
+  type: zip
   files:
-    - packaged-template.yml
+    - template.yaml
+    - outputtemplate.yaml
