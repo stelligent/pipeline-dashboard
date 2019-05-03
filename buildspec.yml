@@ -2,13 +2,14 @@ version: 0.2
 phases:
   install:
     commands:
-      - npm install time
-      - export BUCKET=pipeline-dashboard-us-east-1
-      - aws cloudformation package --template-file template.yml --s3-bucket $BUCKET --output-template-file outputtemplate.yaml
-      - aws s3 cp outputtemplate.yaml s3://${STAGING_BUCKET_PREFIX}-${AWS_REGION}/outputtemplate.yaml
-      - aws s3 cp template.yml s3://${STAGING_BUCKET_PREFIX}-${AWS_REGION}/template.yml
-      
-artifacts:
-  type: zip
-  files:
-    - outputtemplate.yaml
+      - node -v
+      - npm install
+      - node -v
+  build:
+    commands:
+      - npm test
+  post_build:
+    commands:
+      - mkdir -p .out
+      - aws cloudformation package --template-file template.yml --s3-bucket ${STAGING_BUCKET_PREFIX}-${AWS_REGION} --output-template-file .out/template.yml
+      - aws s3 cp .out/template.yml s3://${STAGING_BUCKET_PREFIX}-${AWS_REGION}/template.yml
