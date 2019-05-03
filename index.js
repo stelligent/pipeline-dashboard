@@ -1,5 +1,6 @@
 'use strict';
 const DashboardGenerator = require('./src/dashboardGenerator');
+const DashboardTrendGenerator = require('./src/dashboardTrendGenerator');
 const PipelineEventHandler = require('./src/pipelineEventHandler');
 
 const AWS = require('aws-sdk');
@@ -29,6 +30,19 @@ exports.generateDashboard = (event, context, callback) => {
     });
 
     new DashboardGenerator()
+        .run(statePromise)
+        .then(() => callback())
+        .catch(callback);
+};
+
+exports.generateDashboardTrend = (event, context, callback) => {
+    let statePromise = Promise.resolve({
+        event: event,
+        region: AWS.config.region,
+        cloudwatch: new AWS.CloudWatch()
+    });
+
+    new DashboardTrendGenerator()
         .run(statePromise)
         .then(() => callback())
         .catch(callback);

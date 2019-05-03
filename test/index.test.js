@@ -1,16 +1,16 @@
 'use strict';
 
 var AWS = require('aws-sdk-mock');
+var awsSdk = require('aws-sdk');
 var chai = require("chai");
 var sinonChai = require("sinon-chai");
 chai.use(sinonChai);
 var expect = chai.expect;
-var LambdaTester = require( 'lambda-tester' );
-var index = require( '../index' );
+var LambdaTester = require('lambda-tester');
+var index = require('../index');
 var sinon = require('sinon');
 
-
-describe( 'handlePipelineEvent', function() {
+describe('handlePipelineEvent', function () {
     [
         {
             description: "pipeline multiple success",
@@ -47,7 +47,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     },
@@ -56,7 +56,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCycleTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 600,
                     },
@@ -65,7 +65,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 100,
                     },
@@ -74,7 +74,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "DeliveryLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 100,
                     }
@@ -110,7 +110,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     },
@@ -119,7 +119,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 200,
                     }
@@ -147,9 +147,9 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
-                            {Name: "StageName", Value: "commit"},
-                            {Name: "ActionName", Value: "compile"}
+                            { Name: "PipelineName", Value: "my-pipeline" },
+                            { Name: "StageName", Value: "commit" },
+                            { Name: "ActionName", Value: "compile" }
                         ],
                         "Value": 1,
                     }
@@ -176,8 +176,8 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
-                            {Name: "StageName", Value: "commit"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
+                            { Name: "StageName", Value: "commit" },
                         ],
                         "Value": 1,
                     }
@@ -205,9 +205,9 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
-                            {Name: "StageName", Value: "commit"},
-                            {Name: "ActionName", Value: "compile"}
+                            { Name: "PipelineName", Value: "my-pipeline" },
+                            { Name: "StageName", Value: "commit" },
+                            { Name: "ActionName", Value: "compile" }
                         ],
                         "Value": 1,
                     }
@@ -234,8 +234,8 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
-                            {Name: "StageName", Value: "commit"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
+                            { Name: "StageName", Value: "commit" },
                         ],
                         "Value": 1,
                     }
@@ -270,7 +270,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     }
@@ -334,7 +334,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     },
@@ -343,7 +343,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "RedTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 400,
                     },
@@ -352,7 +352,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessCycleTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 600,
                     },
@@ -361,7 +361,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "SuccessLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 100,
                     },
@@ -370,7 +370,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "DeliveryLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 500,
                     }
@@ -421,7 +421,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     },
@@ -430,7 +430,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "GreenTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 400,
                     },
@@ -439,7 +439,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 100,
                     }
@@ -486,7 +486,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     },
@@ -495,7 +495,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 100,
                     }
@@ -542,7 +542,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureCount",
                         "Unit": "Count",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 1,
                     },
@@ -551,7 +551,7 @@ describe( 'handlePipelineEvent', function() {
                         "MetricName": "FailureLeadTime",
                         "Unit": "Seconds",
                         "Dimensions": [
-                            {Name: "PipelineName", Value: "my-pipeline"},
+                            { Name: "PipelineName", Value: "my-pipeline" },
                         ],
                         "Value": 100,
                     }
@@ -594,4 +594,217 @@ describe( 'handlePipelineEvent', function() {
     });
 });
 
+describe("generateDashboardTrend", () => {
+    let listMetricsStub;
+    let putDashboardSpy;
+    var sandbox = sinon.createSandbox();
+
+    function generateMetrics(n){
+        return [...Array(n).keys()].map(idx => {
+            return {
+                "Namespace": "Pipeline",
+                "Dimensions": [
+                    {
+                        "Name": "PipelineName",
+                        "Value": `my-pipeline-${idx}`
+                    }
+                ],
+                "MetricName": "SuccessCount"
+            }
+        });
+    }
+    let scenarios = [
+        {
+            description: "single pipeline",
+            uniquePipelines: 1,
+            metrics: {
+                "Metrics": [
+                    {
+                        "Namespace": "Pipeline",
+                        "Dimensions": [
+                            {
+                                "Name": "PipelineName",
+                                "Value": "my-pipeline"
+                            }
+                        ],
+                        "MetricName": "SuccessCount"
+                    },
+                    {
+                        "Namespace": "Pipeline",
+                        "Dimensions": [
+                            {
+                                "Name": "PipelineName",
+                                "Value": "my-pipeline"
+                            }
+                        ],
+                        "MetricName": "SuccessCycleTime"
+                    },
+                ]
+            },
+            event: {
+                "account": "123456789012",
+                "region": "ap-southeast-2",
+                "detail": {},
+                "detail-type": "Scheduled Event",
+                "source": "aws.events",
+                "time": "2019-03-01T01:23:45Z",
+                "id": "cdc73f9d-aea9-11e3-9d5a-835b769c0d9c",
+                "resources": [
+                    "arn:aws:events:ap-southeast-2:123456789012:rule/my-schedule"
+                ]
+            }
+        },
+        {
+            description: "multiple pipeline",
+            uniquePipelines: 2,
+            metrics: {
+                "Metrics": [
+                    {
+                        "Namespace": "Pipeline",
+                        "Dimensions": [
+                            {
+                                "Name": "PipelineName",
+                                "Value": "pipeline-1"
+                            }
+                        ],
+                        "MetricName": "SuccessCount"
+                    },
+                    {
+                        "Namespace": "Pipeline",
+                        "Dimensions": [
+                            {
+                                "Name": "PipelineName",
+                                "Value": "pipeline-2"
+                            }
+                        ],
+                        "MetricName": "SuccessCycleTime"
+                    },
+                ]
+            },
+            event: {
+                "account": "123456789012",
+                "region": "ap-southeast-2",
+                "detail": {},
+                "detail-type": "Scheduled Event",
+                "source": "aws.events",
+                "time": "2019-03-01T01:23:45Z",
+                "id": "cdc73f9d-aea9-11e3-9d5a-835b769c0d9c",
+                "resources": [
+                    "arn:aws:events:ap-southeast-2:123456789012:rule/my-schedule"
+                ]
+            }
+        },
+        {
+            description: "too many pipelines",
+            expectTruncated: true,
+            uniquePipelines: 50,
+
+            metrics: {
+                "Metrics": generateMetrics(50)
+            },
+            event: {
+                "account": "123456789012",
+                "region": "ap-southeast-2",
+                "detail": {},
+                "detail-type": "Scheduled Event",
+                "source": "aws.events",
+                "time": "2019-03-01T01:23:45Z",
+                "id": "cdc73f9d-aea9-11e3-9d5a-835b769c0d9c",
+                "resources": [
+                    "arn:aws:events:ap-southeast-2:123456789012:rule/my-schedule"
+                ]
+            }
+        }
+    ]
+
+    scenarios.forEach( scenario => {
+        describe(scenario.description, () => {
+            beforeEach(() => {
+
+                // https://github.com/dwyl/aws-sdk-mock/issues/118
+                // Cannot use aws-sdk-mock
+                putDashboardSpy = sandbox.stub().returns({
+                // putDashboardSpy = sinon.stub().returns({
+                    promise: () => Promise.resolve()
+                })
+        
+                listMetricsStub = sandbox.stub().returns({
+                // listMetricsStub = sinon.stub().returns({
+                    eachPage: (cb) => {
+                        cb(null, scenario.metrics)
+        
+                        cb(null, null) // no more pages
+                    }
+                })
+                // sinon.stub(awsSdk, 'CloudWatch').returns({
+                sandbox.stub(awsSdk, 'CloudWatch').returns({
+                    listMetrics: listMetricsStub,
+                    putDashboard: putDashboardSpy
+                });
+        
+                awsSdk.config.region = 'ap-southeast-2';
+            })
+        
+            afterEach(() => {
+                // awsSdk.CloudWatch.restore();
+                sandbox.restore();
+            })
+        
+            it("should generate a dashboard", () => {
+                return LambdaTester(index.generateDashboardTrend)
+                    .event(scenario.event)
+                    .expectResult((result, additional) => {
+                        expect(putDashboardSpy).to.have.callCount(1);
+                    });
+            })
+        
+            it('should generate 4 text widgets - to explain each metric', () => {
+                return LambdaTester(index.generateDashboardTrend)
+                    .event(scenario.event)
+                    .expectResult((result, additional) => {
+                        const dashboard = JSON.parse(putDashboardSpy.getCall(0).args[0].DashboardBody);
+                        const textWidgets = dashboard.widgets.filter(w => w.type === 'text');
+        
+                        expect(textWidgets.length).to.equal(4);
+        
+                    });
+            })
+        
+            if(scenario.expectTruncated) {
+                it('should report a maximum of 31 pipelines in the dashboard', ()=> {
+                    const consoleSpy = sandbox.spy(console, 'warn')
+                    return LambdaTester(index.generateDashboardTrend)
+                        .event(scenario.event)
+                        .expectResult((result, additional) => {
+                            expect(consoleSpy).to.have.been.calledWith("Maximum of 31 allowed in a single dashboard.  Some pipelines will not be reported.");
+                        });
+                })
+                it('should log a warning if pipelines will not be reported', ()=> {
+                    const consoleSpy = sandbox.spy(console, 'warn')
+                    return LambdaTester(index.generateDashboardTrend)
+                        .event(scenario.event)
+                        .expectResult((result, additional) => {
+                            expect(consoleSpy).to.have.been.calledWith("Maximum of 31 allowed in a single dashboard.  Some pipelines will not be reported.");
+                        });
+                })
+            } else {
+                it('should generate 4 dashboards per pipeline', () => {
+
+                    return LambdaTester(index.generateDashboardTrend)
+                        .event(scenario.event)
+                        .expectResult((result, additional) => {
+                            const dashboard = JSON.parse(putDashboardSpy.getCall(0).args[0].DashboardBody);
+                            const textWidgets = dashboard.widgets.filter(w => w.type === 'metric');
+            
+                            expect(textWidgets.length).to.equal(4 * scenario.uniquePipelines);
+                            
+                        });
+
+                    
+                })
+            }
+        })
+    })
+
+})
 
