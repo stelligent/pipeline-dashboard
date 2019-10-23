@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "StagingBucketPrefix",
+    "ParameterValue": "mr-pipeline-dashboard-sar"
+  },
+  {
+    "ParameterKey": "GitHubRepo",
+    "ParameterValue": "https://github.com/MechanicalRock/pipeline-dashboard.git"
+  },
+  {
+    "ParameterKey": "GitHubToken",
+    "ParameterValue": ""
+  }
+]
