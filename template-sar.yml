@@ -32,7 +32,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: Build CloudWatch dashboard from CloudWatch metrics
-      Handler: index.generateDashboard
+      Handler: index.generateDashboardTrend
       Runtime: nodejs8.10
       CodeUri: s3://pipeline-dashboard-node-0811-us-east-1/2a5aeb4cc9e66058ac7fcd00bd33da64
       Timeout: 60
