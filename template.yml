@@ -47,7 +47,7 @@ Resources:
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: Build CloudWatch Trend dashboard from CloudWatch metrics
-      Handler: index.generateTrendDashboard
+      Handler: index.generateDashboardTrend
       Runtime: nodejs8.10
       CodeUri: .
       Timeout: 60
