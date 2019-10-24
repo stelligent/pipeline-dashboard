@@ -54,7 +54,7 @@ function deploymentFrequencyWidget(pipelineName, y, state) {
             "metrics": [
                 [{ "expression": "FILL(m2,0)", "id": "e2", "period": DAYS.unit, "region": state.region, "yAxis": "left", "color": "#ff7f0e", "label": "Deployment Frequency" }],
                 [{ "expression": `m6/PERIOD(m6) * ${DAYS.unit}`, "label": "Average (30d)", "id": "e1", "color": MEAN_COLOUR }],
-                ["Pipeline", "SuccessCount", "PipelineName", "my-pipeline", { "period": DAYS.unit, "stat": "Sum", "id": "m2", "visible": false, "label": "Deployments" }],
+                ["Pipeline", "SuccessCount", "PipelineName", pipelineName, { "period": DAYS.unit, "stat": "Sum", "id": "m2", "visible": false, "label": "Deployments" }],
                 ["...", { "period": THIRTY_DAYS, "stat": "Sum", "id": "m6", "label": "Deployment Freq (30d)", "visible": false }]
             ],
             "view": "timeSeries",
