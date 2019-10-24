@@ -47,7 +47,7 @@ function deploymentFrequencyWidget(pipelineName, y, state) {
     return {
         "type": "metric",
         "x": 0,
-        "y": y+y_offset,
+        "y": y + y_offset,
         "width": WIDGET_WIDTH,
         "height": WIDGET_HEIGHT,
         "properties": {
@@ -82,8 +82,8 @@ function deploymentFrequencyWidget(pipelineName, y, state) {
                     },
                     {
                         "color": "#dbdb8d",
-                        "label": "multiple per month",
-                        "value": 0.1,
+                        "label": "multiple per week",
+                        "value": 0.25,
                         "fill": "above"
                     }
                 ]
@@ -102,7 +102,7 @@ function otherWidgets(pipelineName, y, state) {
         return {
             "type": "metric",
             "x": mapping.x,
-            "y": y+mapping.y_offset,
+            "y": y + mapping.y_offset,
             "width": WIDGET_WIDTH,
             "height": WIDGET_HEIGHT,
             "properties": {
@@ -152,7 +152,7 @@ class DashboardTrendGenerator {
 
         state.widgetMappings = [
             {
-                x: 0+WIDGET_WIDTH,
+                x: 0 + WIDGET_WIDTH,
                 y_offset: 0,
                 label: "Lead Time",
                 metric: "DeliveryLeadTime",
@@ -161,29 +161,29 @@ class DashboardTrendGenerator {
                     "horizontal": [
                         {
                             "color": ANNOTATION_ELITE_COLOUR,
-                            "label": "daily",
-                            "value": 1,
-                            "fill": "above"
+                            "label": "< 1 hour",
+                            "value": 60,
+                            "fill": "below"
                         },
                         {
                             "color": ANNOTATION_HIGH_COLOUR,
-                            "label": ">1 per month",
-                            "value": 0.1,
-                            "fill": "above"
-                        }
+                            "label": "< 0.5 day",
+                            "value": 60 * 12,
+                            "fill": "below"
+                        },
                     ]
                 }
             },
             {
                 x: 0,
-                y_offset: 0+WIDGET_HEIGHT,
+                y_offset: 0 + WIDGET_HEIGHT,
                 label: "MTBF",
                 metric: "GreenTime",
                 unitConversion: DAYS
             },
             {
-                x: 0+WIDGET_WIDTH,
-                y_offset: 0+WIDGET_HEIGHT,
+                x: 0 + WIDGET_WIDTH,
+                y_offset: 0 + WIDGET_HEIGHT,
                 label: "MTTR",
                 metric: "RedTime",
                 unitConversion: HOURS
@@ -209,7 +209,7 @@ class DashboardTrendGenerator {
                             .reduce((a, b) => a.concat(b), state.pipelineNames);
                 }
             });
-            
+
         });
     }
 
@@ -226,31 +226,55 @@ class DashboardTrendGenerator {
             "widgets": [],
         };
 
+        const TEXT_HEIGHT = 4;
         let x = 0;
         [
             {
                 "title": "Deployment Frequency",
-                "description": "How often code is deployed to production."
+                "description":
+                    "How often code is deployed **to production**.  **Higher = better**.\n\n" +
+                    "Deploying changes more frequently, in smaller increments, correlates with success.\n\n" +
+                    "Elite performers deploy multiple times per day."
             },
             {
                 "title": "Lead Time",
-                "description": "Time from code commit to running in production, including rework"
+                "description":
+                    "Time from code commit to running in production, including rework.  **Lower = better**.\n\n" +
+                    "Reducing lead times reduces cost to value, and improves agility.\n\n" +
+                    "Elite performers have lead times less than 1 day."
             },
             {
                 "title": "MTBF",
-                "description": "Mean time between pipeline failures."
+                "description":
+                    "Mean time between pipeline failures.  **Higher = better**\n\n" +
+                    "A stable pipeline improves *Lead Time* and *Deployment Frequency*.\n\n" +
+                    "And unstable pipeline suggests systemic quality issues that need to be addressed."
             },
             {
                 "title": "MTTR",
-                "description": "Mean time to pipeline recovery"
+                "description":
+                    "Mean time to fix a failing pipeline.  **Lower = better**\n\n" +
+                    "High MTTR negatively effects *Lead Time* and *Deployment Frequency*.\n\n" +
+                    'When the pipeline fails, the team should "stop the line" and swarm to fix it.'
+            },
+            {
+                "title": "Interpreting the Graphs",
+                "description":
+                    "Each metric is graphed on a daily basis.  There may be gaps in the data if the pipeline did not run.\n\n" +
+                    "Charts show the 30-day trend, with p10,p50 and p90 trends. " +
+                    "A wide range between p10 + p90 indicates a large variation and outliers. " +
+                    "This indicates the metric is uncontrolled.  Work to narrow the variance for improved consistency.\n\n" +
+                    "Graphs with annotations show performance in relation to the DORA State of DevOps report.  " +
+                    "The green area indicates elite performers; yellow high performers",
+                "y": 8
             }
         ].forEach(l => {
             dashboard.widgets.push({
                 "type": "text",
                 "x": x,
                 "y": y,
-                "width": 4,
-                "height": WIDGET_HEIGHT/2,
+                "width": l.y ? l.y : 4,
+                "height": TEXT_HEIGHT,
                 "properties": {
                     "markdown": `### ${l.title}\n${l.description}`
                 }
@@ -258,10 +282,10 @@ class DashboardTrendGenerator {
 
             x += 4;
         });
-        y += WIDGET_HEIGHT/2;
+        y += TEXT_HEIGHT;
 
         let pipelineWidgets = state.pipelineNames.map(pipelineName => {
-            let widget = [deploymentFrequencyWidget(pipelineName,y,state)].concat(otherWidgets(pipelineName,y,state));
+            let widget = [deploymentFrequencyWidget(pipelineName, y, state)].concat(otherWidgets(pipelineName, y, state));
             y += WIDGET_HEIGHT;
             return widget;
         });
