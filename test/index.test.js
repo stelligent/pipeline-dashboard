@@ -599,7 +599,7 @@ describe("generateDashboardTrend", () => {
     let putDashboardSpy;
     var sandbox = sinon.createSandbox();
 
-    function generateMetrics(n){
+    function generateMetrics(n) {
         return [...Array(n).keys()].map(idx => {
             return {
                 "Namespace": "Pipeline",
@@ -717,22 +717,22 @@ describe("generateDashboardTrend", () => {
         }
     ]
 
-    scenarios.forEach( scenario => {
+    scenarios.forEach(scenario => {
         describe(scenario.description, () => {
             beforeEach(() => {
 
                 // https://github.com/dwyl/aws-sdk-mock/issues/118
                 // Cannot use aws-sdk-mock
                 putDashboardSpy = sandbox.stub().returns({
-                // putDashboardSpy = sinon.stub().returns({
+                    // putDashboardSpy = sinon.stub().returns({
                     promise: () => Promise.resolve()
                 })
-        
+
                 listMetricsStub = sandbox.stub().returns({
-                // listMetricsStub = sinon.stub().returns({
+                    // listMetricsStub = sinon.stub().returns({
                     eachPage: (cb) => {
                         cb(null, scenario.metrics)
-        
+
                         cb(null, null) // no more pages
                     }
                 })
@@ -741,15 +741,15 @@ describe("generateDashboardTrend", () => {
                     listMetrics: listMetricsStub,
                     putDashboard: putDashboardSpy
                 });
-        
+
                 awsSdk.config.region = 'ap-southeast-2';
             })
-        
+
             afterEach(() => {
                 // awsSdk.CloudWatch.restore();
                 sandbox.restore();
             })
-        
+
             it("should generate a dashboard", () => {
                 return LambdaTester(index.generateDashboardTrend)
                     .event(scenario.event)
@@ -757,50 +757,76 @@ describe("generateDashboardTrend", () => {
                         expect(putDashboardSpy).to.have.callCount(1);
                     });
             })
-        
+
             it('should generate 5 text widgets - to explain each metric + interpretation', () => {
                 return LambdaTester(index.generateDashboardTrend)
                     .event(scenario.event)
                     .expectResult((result, additional) => {
                         const dashboard = JSON.parse(putDashboardSpy.getCall(0).args[0].DashboardBody);
                         const textWidgets = dashboard.widgets.filter(w => w.type === 'text');
-        
+
                         expect(textWidgets.length).to.equal(5);
-        
+
                     });
             })
-        
-            if(scenario.expectTruncated) {
-                it('should report a maximum of 31 pipelines in the dashboard', ()=> {
-                    const consoleSpy = sandbox.spy(console, 'warn')
-                    return LambdaTester(index.generateDashboardTrend)
-                        .event(scenario.event)
-                        .expectResult((result, additional) => {
-                            expect(consoleSpy).to.have.been.calledWith("Maximum of 31 allowed in a single dashboard.  Some pipelines will not be reported.");
-                        });
-                })
-                it('should log a warning if pipelines will not be reported', ()=> {
-                    const consoleSpy = sandbox.spy(console, 'warn')
-                    return LambdaTester(index.generateDashboardTrend)
-                        .event(scenario.event)
-                        .expectResult((result, additional) => {
-                            expect(consoleSpy).to.have.been.calledWith("Maximum of 31 allowed in a single dashboard.  Some pipelines will not be reported.");
-                        });
+
+            if (scenario.expectTruncated) {
+                describe('When there are too many pipelines in the account', () => {
+                    it('should report a maximum of 31 pipelines in the dashboard', () => {
+                        const consoleSpy = sandbox.spy(console, 'warn')
+                        return LambdaTester(index.generateDashboardTrend)
+                            .event(scenario.event)
+                            .expectResult((result, additional) => {
+                                expect(consoleSpy).to.have.been.calledWith("Maximum of 31 allowed in a single dashboard.  Some pipelines will not be reported.");
+                            });
+                    })
+                    it('should log a warning when pipelines will not be reported', () => {
+                        const consoleSpy = sandbox.spy(console, 'warn')
+                        return LambdaTester(index.generateDashboardTrend)
+                            .event(scenario.event)
+                            .expectResult((result, additional) => {
+                                expect(consoleSpy).to.have.been.calledWith("Maximum of 31 allowed in a single dashboard.  Some pipelines will not be reported.");
+                            });
+                    })
                 })
             } else {
-                it('should generate 4 dashboards per pipeline', () => {
+                const widgetsPerPipeline = 4;
+                it(`should generate ${widgetsPerPipeline} dashboards per pipeline`, () => {
 
                     return LambdaTester(index.generateDashboardTrend)
                         .event(scenario.event)
                         .expectResult((result, additional) => {
                             const dashboard = JSON.parse(putDashboardSpy.getCall(0).args[0].DashboardBody);
-                            const textWidgets = dashboard.widgets.filter(w => w.type === 'metric');
-            
-                            expect(textWidgets.length).to.equal(4 * scenario.uniquePipelines);
-                            
+                            const metricWidgets = dashboard.widgets.filter(w => w.type === 'metric');
+
+                            expect(metricWidgets.length).to.equal(widgetsPerPipeline * scenario.uniquePipelines);
+
                         });
 
-                    
+
+                });
+
+                it('should reference the PipelineName in the metrics for each widget', () => {
+                    return LambdaTester(index.generateDashboardTrend)
+                        .event(scenario.event)
+                        .expectResult((result, additional) => {
+                            const dashboard = JSON.parse(putDashboardSpy.getCall(0).args[0].DashboardBody);
+                            const metricWidgets = dashboard.widgets.filter(w => w.type === 'metric');
+
+                            const pipelineNames = [...new Set(scenario.metrics.Metrics.map(m => m.Dimensions[0].Value))];
+                            
+                            pipelineNames.forEach((name, idx) => {
+                                const startIdx = idx*widgetsPerPipeline;
+                                const widgetsForPipeline = metricWidgets.slice(startIdx, startIdx+widgetsPerPipeline);
+
+                                widgetsForPipeline.forEach(widget => {
+
+                                    expect(JSON.stringify(widget.properties.metrics)).to.contain(name)
+                                }) 
+                            })
+                            console.log(pipelineNames)
+
+                        });
                 })
             }
         })
