@@ -57,3 +57,12 @@ To deploy the CodeBuild project for staging the templates: `npm run create-codeb
 To deploy to your account: `npm run deploy`
 You can change the bucket via `npm config set pipeline-dashboard:staging_bucket my-bucket-name`
 
+
+# Release
+
+To Release:
+1. Push your changes.
+2. Run the codebuild project in ap-southeast-2 to build the package
+3. Look in S3 at the updated template `https://mr-pipeline-dashboard-sar-ap-southeast-2.s3-ap-southeast-2.amazonaws.com/template.yml`
+4. Update `template-sar.yml` with the updated codeuri references
+5. Release the SAR in us-east-1
