@@ -758,14 +758,14 @@ describe("generateDashboardTrend", () => {
                     });
             })
         
-            it('should generate 4 text widgets - to explain each metric', () => {
+            it('should generate 5 text widgets - to explain each metric + interpretation', () => {
                 return LambdaTester(index.generateDashboardTrend)
                     .event(scenario.event)
                     .expectResult((result, additional) => {
                         const dashboard = JSON.parse(putDashboardSpy.getCall(0).args[0].DashboardBody);
                         const textWidgets = dashboard.widgets.filter(w => w.type === 'text');
         
-                        expect(textWidgets.length).to.equal(4);
+                        expect(textWidgets.length).to.equal(5);
         
                     });
             })
