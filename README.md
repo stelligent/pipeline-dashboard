@@ -66,3 +66,7 @@ To Release:
 3. Look in S3 at the updated template `https://mr-pipeline-dashboard-sar-ap-southeast-2.s3-ap-southeast-2.amazonaws.com/template.yml`
 4. Update `template-sar.yml` with the updated codeuri references
 5. Release the SAR in us-east-1
+
+# TODO
+
+* Review `pipline.yml` and deploy?
