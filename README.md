@@ -1,21 +1,32 @@
-![badge](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoid1JPbWN0clZOK2U5M3FPS1ZJRVhJbDRQOFErbjluRll5WTlsQUJyWklQWTZycTJsWk44anplbHdmNEVEeUIvd1loTUtILzh0MzFET3BpVFZ0UGhuV05vPSIsIml2UGFyYW1ldGVyU3BlYyI6InQxMk1WbXBmaXZuSnpwbGciLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
-
 # Overview
-Simple dashboard built for viewing pipeline metrics in AWS.  Built using CloudWatch dashboards and metrics populated from CloudWatch events that CodePipeline triggers. You can also deploy this dashboard directly from the AWS Serverless Application Repository [here](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard).
+Simple dashboard built for viewing pipeline metrics in AWS.  Built using CloudWatch dashboards and metrics populated from CloudWatch events that CodePipeline triggers. You can also deploy this dashboard directly from the AWS Serverless Application Repository [here](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:611781478414:applications~mechanicalrock-pipeline-dashboard).
 
-For more details, see the blog post [CodePipeline Dashboard](https://stelligent.com/2017/11/16/codepipeline-dashboard/).
+This is a fork of the Stelligent Pipeline Dashboard.  For more details, see the original blog post [CodePipeline Dashboard](https://stelligent.com/2017/11/16/codepipeline-dashboard/).
 
-![Screen Shot](https://github.com/stelligent/pipeline-dashboard/blob/master/docs/screen-shot.png)
+![Screen Shot](docs/screen-shot.png)
+
+## Pipeline Trends
+
+Whilst the metrics themselves provide insight as to the current health of a project, by looking at trends over time you can use a data driven approach to your process improvement.  If we implement continuous deployment, Cycle Time should improve.
+The [State of DevOps](https://services.google.com/fh/files/misc/state-of-devops-2019.pdf) report defines 4 key metrics:
+
+| Metric | Definition  |
+| -------| ----------- |
+| `Lead Time for changes` | For the primary application or service you work on, what is your lead time for changes (i.e., how long does it take to go from code committed to code successfully running in production)? |
+| `Deployment Frequency`  | For the primary application or service you work on, how often does your organization deploy code to production or release it to end users? |
+| `Time to Restore Service` | For the primary application or service you work on, how long does it generally take to restore service when a service incident or a defect that impacts users occurs (e.g., unplanned outage or service impairment)? |
+| `Change Failure Rate` | For the primary application or service you work on, what percentage of changes to production or released to users result in degraded service (e.g., lead to service impairment or service outage) and subsequently require remediation (e.g., require a hotfix, rollback, fix forward, patch)? |
+
+Lead Time and Deployment Frequency can be measured using the pipeline, to assess Software Delivery and Operational Performance against industry benchmarks.
+
+Mean Time To Recovery is not a direct correlation for a pipeline, since failures in the pipeline never make it to production, which is a good thing!  Similarly, depending on your pipeline, Change Failure Rate similarly cannot be directly measured, unless your pipeline includes staged deployment, such as Blue/Green or Canary deployments.
+
+![Screen Shot](docs/screenshot-trend.png)
+
 
 ## Launch now!
 
-Use the **Serverless Application Repository** to deploy in your account: [Deploy Now](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard)
-
-Alternatively, you can deploy via CloudFormation directly:
-
-| us-east-1 | us-west-2 |
-| --------- | --------- |
-| [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3.amazonaws.com/pipeline-dashboard-us-east-1/template.yml) | [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3-us-west-2.amazonaws.com/pipeline-dashboard-us-west-2/template.yml) |
+Use the **Serverless Application Repository** to deploy in your account: [Deploy Now](https://serverlessrepo.aws.amazon.com/applications/arn:aws:serverlessrepo:us-east-1:611781478414:applications~mechanicalrock-pipeline-dashboard)
 
 # Architecture
 
@@ -46,7 +57,6 @@ The list of pipelines in the dashboard cannot be generated dyanmically so anothe
 
 ![Success 2](docs/pipeline-dashboard-success-2.png)
 *Fig.2 - Pipelines in parallel*
-
 
 # Development
 
