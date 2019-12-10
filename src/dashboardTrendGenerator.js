@@ -75,17 +75,22 @@ function deploymentFrequencyWidget(pipelineName, y, state) {
             "annotations": {
                 "horizontal": [
                     {
-                        "color": "#98df8a",
+                        "color": ANNOTATION_ELITE_COLOUR,
                         "label": "daily",
                         "value": 1,
                         "fill": "above"
                     },
-                    {
-                        "color": "#dbdb8d",
-                        "label": "multiple per week",
-                        "value": 0.25,
-                        "fill": "above"
-                    }
+                    [
+                        {
+                            "color": ANNOTATION_HIGH_COLOUR,
+                            "label": "multiple per week",
+                            "value": 0.25
+                        },
+                        {
+                            "value": 1,
+                            "label": "daily"
+                        }
+                    ]
                 ]
             }
         }
@@ -165,12 +170,17 @@ class DashboardTrendGenerator {
                             "value": 60,
                             "fill": "below"
                         },
-                        {
-                            "color": ANNOTATION_HIGH_COLOUR,
-                            "label": "< 0.5 day",
-                            "value": 60 * 12,
-                            "fill": "below"
-                        },
+                        [
+                            {
+                                "color": ANNOTATION_HIGH_COLOUR,
+                                "value": 60,
+                                "label": "1 hour"
+                            },
+                            {
+                                "label": "< 0.5 day",
+                                "value": 60 * 12
+                            },
+                        ]
                     ]
                 }
             },
