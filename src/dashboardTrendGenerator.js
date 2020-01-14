@@ -296,7 +296,7 @@ class DashboardTrendGenerator {
 
         let pipelineWidgets = state.pipelineNames.map(pipelineName => {
             let widget = [deploymentFrequencyWidget(pipelineName, y, state)].concat(otherWidgets(pipelineName, y, state));
-            y += WIDGET_HEIGHT;
+            y += 2 * WIDGET_HEIGHT;
             return widget;
         });
 
