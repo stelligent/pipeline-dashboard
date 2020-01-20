@@ -12,12 +12,9 @@
     "package": "npm run package:cfn && npm run package:template",
     "package:cfn": "mkdir -p .out && aws cloudformation package --template-file template.yml --s3-bucket ${npm_package_config_staging_bucket}-${npm_package_config_region} --output-template-file .out/template.yml",
     "package:template": "aws s3 cp .out/template.yml s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml",
-
     "create-codebuild": "aws cloudformation create-stack --region ${npm_package_config_region} --stack-name pipeline-dashboard-codebuild --template-body file://codebuild.yml --capabilities CAPABILITY_NAMED_IAM ",
     "update-codebuild": "aws cloudformation update-stack --region ${npm_package_config_region} --stack-name pipeline-dashboard-codebuild --template-body file://codebuild.yml --capabilities CAPABILITY_NAMED_IAM --parameters ParameterKey=GitHubToken,UsePreviousValue=true",
-
     "deploy": "aws s3 cp s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml .out/template.yml && aws cloudformation deploy --template-file .out/template.yml --stack-name $npm_package_config_stack_name --capabilities CAPABILITY_NAMED_IAM --region $npm_package_config_region ",
-
     "test": "node ./node_modules/jshint/bin/jshint index.js src/*.js && node ./node_modules/mocha/bin/_mocha"
   },
   "repository": {
@@ -31,13 +28,13 @@
   },
   "homepage": "https://github.com/stelligent/pipeline-dashboard#readme",
   "devDependencies": {
-    "aws-sdk-mock": "^1.7.0",
+    "aws-sdk-mock": "^5.0.0",
     "chai": "^4.1.2",
     "jshint": "^2.9.5",
-    "lambda-tester": "^3.1.0",
-    "mocha": "^4.0.1",
-    "sinon": "^4.0.1",
-    "sinon-chai": "^2.14.0"
+    "lambda-tester": "^4.0.1",
+    "mocha": "^7.0.0",
+    "sinon": "^8.1.0",
+    "sinon-chai": "^3.4.0"
   },
   "dependencies": {
     "aws-sdk": "^2.138.0"
