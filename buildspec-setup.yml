@@ -19,7 +19,7 @@ phases:
       - >-
         aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity
         --output text --query 'Account')
-      - zip pipeline-dashboard.zip *.*
+      - zip -r pipeline-dashboard.zip *.* ./src ./test
       - >-
         aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity
         --output text --query 'Account')
