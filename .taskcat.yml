@@ -8,6 +8,6 @@ tests:
   # cloudwatch-dashboard:
   #   parameters:
   #     PipelinePattern: "*"
-  #     BucketName: pipeline-dashboard-114930652771
+  #     BucketName: pipeline-dashboard-ACCOUNTID
   #     CodeKey: pipeline-dashboard.zip
   #   template: ./template.yml
