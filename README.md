@@ -9,13 +9,25 @@ For more details, see the blog post [CodePipeline Dashboard](https://stelligent.
 
 ## Launch now!
 
-Use the **Serverless Application Repository** to deploy in your account: [Deploy Now](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard)
+<!--Use the **Serverless Application Repository** to deploy in your account: [Deploy Now](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard)-->
 
 Alternatively, you can deploy via CloudFormation directly:
 
-| us-east-1 | us-west-2 |
-| --------- | --------- |
-| [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3.amazonaws.com/pipeline-dashboard-us-east-1/template.yml) | [![Launch](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=pipeline-dashboard&templateURL=https://s3-us-west-2.amazonaws.com/pipeline-dashboard-us-west-2/template.yml) |
+1. From the local `pipeline-dashboard` GitHub repo, create a Zip file.
+```
+zip -r pipeline-dashboard.zip *.* ./src ./test
+```
+2. Upload the zip file to S3.
+
+```
+aws s3 mb s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
+aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
+```
+3. Make note of the S3 Bucket and Zip file name.
+4. Launch the CloudFormation stack. You will need to change the `--template-body` *value* to point to the location of the `template.yml` on your machine.
+```
+aws cloudformation create-stack --stack-name pipeline-dashboard-stack --template-body file:///home/ec2-user/environment/pipeline-dashboard/template.yml  --parameters ParameterKey=PipelinePattern,ParameterValue=* ParameterKey=BucketName,ParameterValue=pipeline-dashboard-ACCOUNTID ParameterKey=CodeKey,ParameterValue=pipeline-dashboard.zip --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --disable-rollback
+```
 
 # Architecture
 
