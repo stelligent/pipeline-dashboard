@@ -1,0 +1,15 @@
+---
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Create an SQS Queue
+Resources:
+  MyQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${AWS::StackName}
+Outputs:
+  SourceQueueARN: 
+    Description: "ARN of source queue"
+    Value: 
+      Fn::GetAtt: 
+        - "MyQueue"
+        - "Arn"

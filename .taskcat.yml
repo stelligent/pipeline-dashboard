@@ -3,9 +3,11 @@ project:
   regions:
     - us-east-1
 tests:
-  cloudwatch-dashboard:
-    parameters:
-      PipelinePattern: "*"
-      BucketName: pipeline-dashboard-114930652771
-      CodeKey: pipeline-dashboard.zip
-    template: ./template.yml
+  test-cfn:
+    template: ./test-cfn.yml
+  # cloudwatch-dashboard:
+  #   parameters:
+  #     PipelinePattern: "*"
+  #     BucketName: s3-bucket-name
+  #     CodeKey: pipeline-dashboard.zip
+  #   template: ./template.yml
