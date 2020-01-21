@@ -26,6 +26,7 @@ aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity --output tex
 ```
 aws cloudformation create-stack --stack-name pipeline-dashboard-stack --template-body file:///home/ec2-user/environment/pipeline-dashboard/template.yml  --parameters ParameterKey=PipelinePattern,ParameterValue=* ParameterKey=BucketName,ParameterValue=pipeline-dashboard-ACCOUNTID ParameterKey=CodeKey,ParameterValue=pipeline-dashboard.zip --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --disable-rollback
 ```
+5. Once the CloudFormation stack is **CREATE-COMPLETE**, you will need to trigger a few CodePipeline runs in order to update the CloudWatch dashboard. After these runs, go to the [CloudWatch Console](https://console.aws.amazon.com/cloudwatch) and click on **Dashboards** to see the metrics reflected in the dashboard. 
 
 # Architecture
 
