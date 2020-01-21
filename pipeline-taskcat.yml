@@ -5,7 +5,7 @@ Parameters:
   GitHubUser:
     Type: String
     Description: GitHub User
-    Default: "Stelligent"
+    Default: "stelligent"
   GitHubRepo:
     Type: String
     Description: GitHub Repo to pull from. Only the Name. not the URL
@@ -170,7 +170,7 @@ Resources:
       Description: Run TaskCat
       ServiceRole: !GetAtt CodeBuildRole.Arn
       Artifacts:
-        Type: CODEPIPELINE
+        Type: NO_ARTIFACTS
       Environment:
         Type: LINUX_CONTAINER
         ComputeType: BUILD_GENERAL1_SMALL
