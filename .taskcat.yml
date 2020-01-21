@@ -5,7 +5,7 @@ project:
 tests:
   cloudwatch-dashboard:
     parameters:
-      PipelinePattern: *
+      PipelinePattern: "*"
       BucketName: pipeline-dashboard-114930652771
       CodeKey: pipeline-dashboard.zip
     template: ./template.yml
