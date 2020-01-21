@@ -1,0 +1,7 @@
+project:
+  name: pipeline-dashboard
+  regions:
+    - us-east-1
+tests:
+  cloudwatch-dashboard:
+    template: ./template.yml

@@ -68,3 +68,10 @@ To deploy the CodeBuild project for staging the templates: `npm run create-codeb
 To deploy to your account: `npm run deploy`
 You can change the bucket via `npm config set pipeline-dashboard:staging_bucket my-bucket-name`
 
+# Test
+
+To launch a CloudFormation stack that create a deployment pipeline which runs TaskCat test that launch other CloudFormation stacks in this repo, run the the command below. You will need to change the `--template-body` *value* to point to the location of the `pipeline-taskcat.yml` on your machine. 
+```
+aws cloudformation create-stack --stack-name pipeline-dashboard-taskcat --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/pipeline-dashboard/pipeline-taskcat.yml
+```
+
