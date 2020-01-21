@@ -11,9 +11,7 @@ For more details, see the blog post [CodePipeline Dashboard](https://stelligent.
 
 <!--Use the **Serverless Application Repository** to deploy in your account: [Deploy Now](https://serverlessrepo.aws.amazon.com/#/applications/arn:aws:serverlessrepo:us-east-1:923120264911:applications~pipeline-dashboard)-->
 
-Alternatively, you can deploy via CloudFormation directly:
-
-1. From the local `pipeline-dashboard` GitHub repo, create a Zip file.
+1. From your local `pipeline-dashboard` GitHub repo, create a zip file.
 ```
 zip -r pipeline-dashboard.zip *.* ./src ./test
 ```
@@ -23,8 +21,8 @@ zip -r pipeline-dashboard.zip *.* ./src ./test
 aws s3 mb s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
 aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
 ```
-3. Make note of the S3 Bucket and Zip file name.
-4. Launch the CloudFormation stack. You will need to change the `--template-body` *value* to point to the location of the `template.yml` on your machine.
+3. Make note of the S3 Bucket and zip file name.
+4. Launch the CloudFormation stack by running the command below. You will need to change the `--template-body` *value* to point to the location of the `template.yml` on your machine. You will also change `ACCOUNTID` to your AWS account id.
 ```
 aws cloudformation create-stack --stack-name pipeline-dashboard-stack --template-body file:///home/ec2-user/environment/pipeline-dashboard/template.yml  --parameters ParameterKey=PipelinePattern,ParameterValue=* ParameterKey=BucketName,ParameterValue=pipeline-dashboard-ACCOUNTID ParameterKey=CodeKey,ParameterValue=pipeline-dashboard.zip --capabilities CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --disable-rollback
 ```
