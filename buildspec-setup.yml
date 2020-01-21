@@ -10,12 +10,19 @@ phases:
       - echo In buildspec-setup.yml Build started on `date`
       - >-
         aws s3api list-buckets --query 'Buckets[?starts_with(Name,
-        `pipeline-dashboard`) == `true`].[Name]' --output text | xargs -I {} aws s3
-        rb s3://{} --force
-      - aws s3 mb s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
-      - aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
+        `pipeline-dashboard-$(aws sts get-caller-identity --output
+        text --query 'Account')`) == `true`].[Name]' --output text | xargs -I {} aws
+        s3 rb s3://{} --force
+      - >-
+        aws s3 mb s3://pipeline-dashboard-$(aws sts get-caller-identity --output
+        text --query 'Account')
+      - >-
+        aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity
+        --output text --query 'Account')
       - zip pipeline-dashboard.zip *.*
-      - aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity --output text --query 'Account')
+      - >-
+        aws s3 sync . s3://pipeline-dashboard-$(aws sts get-caller-identity
+        --output text --query 'Account')
   post_build:
     commands:
       - echo In buildspec-setup.yml Build completed on `date`
