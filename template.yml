@@ -5,14 +5,22 @@ Parameters:
   PipelinePattern:
     Description: 'The pattern of pipeline names to allow access to describe.  Recommended value: *'
     Type: String
+  BucketName:
+      Description: 'S3 BucketName for Node functions. For example: pipeline-dashboard'
+      Type: String
+  CodeKey:
+      Description: 'S3 Key for Node functions. For example: pipeline-dashboard.zip'
+      Type: String
 Resources:
   PipelineDashboardEventHandler:
     Type: 'AWS::Serverless::Function'
     Properties:
       Description: Create CloudWatch metrics from CodePipeline events
       Handler: index.handlePipelineEvent
-      Runtime: nodejs8.10
-      CodeUri: .
+      Runtime: nodejs12.x
+      CodeUri:
+        Bucket: !Ref BucketName
+        Key: !Ref CodeKey
       Events:
         PipelineEventRule:
           Type: CloudWatchEvent
@@ -33,8 +41,10 @@ Resources:
     Properties:
       Description: Build CloudWatch dashboard from CloudWatch metrics
       Handler: index.generateDashboard
-      Runtime: nodejs8.10
-      CodeUri: .
+      Runtime: nodejs12.x
+      CodeUri:
+        Bucket: !Ref BucketName
+        Key: !Ref CodeKey
       Timeout: 60
       Events:
         DashboardEventRule:
