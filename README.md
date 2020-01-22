@@ -78,10 +78,10 @@ aws cloudformation create-stack --stack-name pipeline-dashboard-taskcat --capabi
 # Deployment to SAR
 
 1. Go to [AWS SAR Console](https://console.aws.amazon.com/serverlessrepo/) in the production account and click on **pipeline-dashboard**.
-2. Click on **Publish application**.
+2. Click on **Publish new version**.
 3. Enter value for **Semantic version**.
-4. Enter `https://github.com/stelligent/pipeline-dashboard` for **Repo**.
-5. For the SAM template, upload `template-sar.yml`.
+4. Enter `https://github.com/stelligent/pipeline-dashboard` for **Source code URL**.
+5. For the SAM template, Browse for [template-sar.yml](https://github.com/stelligent/pipeline-dashboard/blob/master/template-sar.yml) from this repo and click the **Publish Version** button.
 6. Go to the [AWS Lambda Console](https://console.aws.amazon.com/lambda/) on a separate AWS account and when creating a function, click on the **Serverless Application Repository** radio button and find `pipeline-dashboard`.
 7. Deploy the application.
 8. Once it is complete, go to the [Amazon CloudWatch Console](https://console.aws.amazon.com/cloudwatch/) and choose **Dashboards** to verify it is working.
