@@ -8,9 +8,11 @@ Parameters:
   BucketName:
       Description: 'S3 BucketName for Node functions. For example: pipeline-dashboard'
       Type: String
+      Default: pipeline-dashboard-node-0811
   CodeKey:
       Description: 'S3 Key for Node functions. For example: pipeline-dashboard.zip'
       Type: String
+      Default: pipeline-dashboard.zip
 Resources:
   PipelineDashboardEventHandler:
     Type: 'AWS::Serverless::Function'
