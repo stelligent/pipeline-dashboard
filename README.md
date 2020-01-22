@@ -75,3 +75,14 @@ To launch a CloudFormation stack that create a deployment pipeline which runs Ta
 aws cloudformation create-stack --stack-name pipeline-dashboard-taskcat --capabilities CAPABILITY_NAMED_IAM --disable-rollback --template-body file:///home/ec2-user/environment/pipeline-dashboard/pipeline-taskcat.yml
 ```
 
+# Deployment to SAR
+
+1. Go to [AWS SAR Console](https://console.aws.amazon.com/serverlessrepo/) in the production account and click on **pipeline-dashboard**.
+2. Click on **Publish application**.
+3. Enter value for **Semantic version**.
+4. Enter `https://github.com/stelligent/pipeline-dashboard` for **Repo**.
+5. For the SAM template, upload `template-sar.yml`.
+6. Go to the [AWS Lambda Console](https://console.aws.amazon.com/lambda/) on a separate AWS account and when creating a function, click on the **Serverless Application Repository** radio button and find `pipeline-dashboard`.
+7. Deploy the application.
+8. Once it is complete, go to the [Amazon CloudWatch Console](https://console.aws.amazon.com/cloudwatch/) and choose **Dashboards** to verify it is working.
+
