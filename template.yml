@@ -55,3 +55,18 @@ Resources:
             Schedule: "cron(*/5 * * * ? *)"
       Policies:
       - CloudWatchDashboardPolicy: {}
+  PipelineDashboardTrendGenerator:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Description: Build CloudWatch Trend dashboard from CloudWatch metrics
+      Handler: index.generateDashboardTrend
+      Runtime: nodejs8.10
+      CodeUri: .
+      Timeout: 60
+      Events:
+        DashboardEventRule:
+          Type: Schedule
+          Properties:
+            Schedule: "cron(*/5 * * * ? *)"
+      Policies:
+      - CloudWatchDashboardPolicy: {}
