@@ -12,14 +12,14 @@ Parameters:
   GitHubRepoCB:
     Type: String
     Description: URL for source code
-    Default: https://github.com/stelligent/pipeline-dashboard.git
+    Default: https://github.com/cto-ai/pipeline-dashboard.git
   SiteBucketName:
     Type: String
     Description: Name of bucket to create to host the website
   GitHubUser:
     Type: String
     Description: GitHub User
-    Default: "stelligent"
+    Default: "cto-ai"
   GitHubRepoCPL:
     Type: String
     Description: GitHub Repo to pull from. Only the Name. not the URL

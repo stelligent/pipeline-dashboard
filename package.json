@@ -4,11 +4,12 @@
   "description": "Simple dashboard for pipelines on AWS",
   "main": "index.js",
   "config": {
-    "region": "us-east-1",
+    "region": "us-west-2",
     "staging_bucket": "pipeline-dashboard",
     "stack_name": "pipeline-dashboard"
   },
   "scripts": {
+    "env": "echo s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml .out/template.yml",
     "package": "npm run package:cfn && npm run package:template",
     "package:cfn": "mkdir -p .out && aws cloudformation package --template-file template.yml --s3-bucket ${npm_package_config_staging_bucket}-${npm_package_config_region} --output-template-file .out/template.yml",
     "package:template": "aws s3 cp .out/template.yml s3://${npm_package_config_staging_bucket}-${npm_package_config_region}/template.yml",
