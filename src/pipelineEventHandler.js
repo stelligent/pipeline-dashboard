@@ -91,7 +91,7 @@ class PipelineEventHandler {
         // something we want to store. If there is no match, no Events API
         // request is made.
         if (state.event['detail-type'] === STAGE_EVENT && state.event.detail.state === 'SUCCEEDED') {
-            console.log("Stage Event Succeeded\n");
+            console.log("Change Initiated event");
             sendEvent({
                 event_name: "Change Initiated",
                 change_id,
@@ -102,7 +102,7 @@ class PipelineEventHandler {
         }
 
         if (state.event['detail-type'] === PIPELINE_EVENT && state.event.detail.state === 'SUCCEEDED') {
-            console.log("Deployment success event\n");
+            console.log("Deployment Success event");
 
             sendEvent({
                 event_name: "Change Completed",
@@ -123,7 +123,8 @@ class PipelineEventHandler {
         }
 
         if (state.event['detail-type'] === PIPELINE_EVENT && state.event.detail.state === 'FAILED') {
-            console.log("Deployment failure event\n");
+            console.log("Deployment Failure event");
+
             sendEvent({
                 event_name: "Deployment Failure",
                 change_id,
