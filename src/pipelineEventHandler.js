@@ -9,15 +9,16 @@ const ACTION_EVENT = 'CodePipeline Action Execution State Change';
 const COUNT = 'Count';
 const SECONDS = 'Seconds';
 
-const EVENTS_API_URI = 'api.stg.cto.sh';
+const EVENTS_API_HOST = 'api.stg.cto.sh';
+const EVENTS_API_PORT = 443;
 const EVENTS_API_TOKEN = process.env.EVENTS_API_TOKEN
 
 const sendEvent = (postBody) => {
         const token = EVENTS_API_TOKEN;;
 
         var options = {
-            hostname: EVENTS_API_URI,
-            port: 443,
+            hostname: EVENTS_API_HOST,
+            port: EVENTS_API_PORT,
             path: '/events',
             method: 'POST',
             headers: {
