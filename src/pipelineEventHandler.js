@@ -9,20 +9,21 @@ const ACTION_EVENT = 'CodePipeline Action Execution State Change';
 const COUNT = 'Count';
 const SECONDS = 'Seconds';
 
-const EVENTS_API_HOST = process.env.EVENTS_API_HOST;
-const EVENTS_API_PORT = process.env.EVENTS_API_PORT;
-const EVENTS_API_TOKEN = process.env.EVENTS_API_TOKEN;
+const PIPELINE_DASHBOARD_EVENTS_API_HOST = process.env.PIPELINE_DASHBOARD_EVENTS_API_HOST;
+const PIPELINE_DASHBOARD_EVENTS_API_PORT = process.env.PIPELINE_DASHBOARD_EVENTS_API_PORT;
+const PIPELINE_DASHBOARD_EVENTS_API_TOKEN = process.env.PIPELINE_DASHBOARD_EVENTS_API_TOKEN;
+const PIPELINE_DASHBOARD_DEBUG = (x => x === 'true')(process.env.PIPELINE_DASHBOARD_DEBUG);
 
 const sendEvent = (postBody) => {
 
         const options = {
-            hostname: EVENTS_API_HOST,
-            port: EVENTS_API_PORT,
+            hostname: PIPELINE_DASHBOARD_EVENTS_API_HOST,
+            port: PIPELINE_DASHBOARD_EVENTS_API_PORT,
             path: '/events',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + EVENTS_API_TOKEN
+                'Authorization': 'Bearer ' + PIPELINE_DASHBOARD_EVENTS_API_TOKEN
             }
         };
 
@@ -30,7 +31,7 @@ const sendEvent = (postBody) => {
 
         const req = https.request(options, (res) => {
             res.on('data', (d) => {
-                process.stdout.write(d);
+                if (PIPELINE_DASHBOARD_DEBUG) process.stdout.write(d);
             });
         });
 
@@ -54,8 +55,8 @@ class PipelineEventHandler {
             .then(this.putMetricData);
     }
 
+    // state.event holds the AWS CodePipeline event info coming from CodePipeling
     recordEvents(state) {
-        console.log("AWS CodePipeline Event Info: ", JSON.stringify(state.event));
 
         // CodePipeline validates the incoming pipeline unique identifier. This
         // will never be null/undefined.
@@ -71,7 +72,11 @@ class PipelineEventHandler {
             {pipeline_id:"AWS-demo-kyle",team_id:"8e8f8fdc-7c98-4896-b080-b47bfcf860d4"},
             {pipeline_id:"AWS-demo-three",team_id:"0aa855f6-fe7b-4bd6-8b68-a6345e41dc34"},
             {pipeline_id:"AWS-demo-two",team_id:"81050f56-da15-41c9-8270-d6f6574b73bc"},
-            {pipeline_id:"AWS-demo-one",team_id:"d2ab1965-edea-49dc-9ef1-2c5626b98b07"}
+            {pipeline_id:"AWS-demo-one",team_id:"d2ab1965-edea-49dc-9ef1-2c5626b98b07"},
+
+            // This pipeline_id is used by local tests. We could inject this data
+            // structure but that would require a lot more refactoring.
+            {pipeline_id:"my-pipeline",team_id:"test1_team_id"}
         ];
 
         const pipeline_match = pipelines.find(o => o.pipeline_id === pipeline_id);
@@ -89,8 +94,9 @@ class PipelineEventHandler {
         // These if statements check the incoming event to see if they match
         // something we want to store. If there is no match, no Events API
         // request is made.
+
+        // Change Initiated event
         if (state.event['detail-type'] === STAGE_EVENT && state.event.detail.state === 'SUCCEEDED') {
-            console.log("Change Initiated event");
             sendEvent({
                 event_name: "Change Initiated",
                 change_id,
@@ -100,8 +106,8 @@ class PipelineEventHandler {
             });
         }
 
+        // Deployment success event and change completed event
         if (state.event['detail-type'] === PIPELINE_EVENT && state.event.detail.state === 'SUCCEEDED') {
-            console.log("Deployment Success event");
 
             sendEvent({
                 event_name: "Change Completed",
@@ -121,8 +127,8 @@ class PipelineEventHandler {
 
         }
 
+        // Deployment Failure event
         if (state.event['detail-type'] === PIPELINE_EVENT && state.event.detail.state === 'FAILED') {
-            console.log("Deployment Failure event");
 
             sendEvent({
                 event_name: "Deployment Failure",
