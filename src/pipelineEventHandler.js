@@ -14,22 +14,21 @@ const EVENTS_API_PORT = process.env.EVENTS_API_PORT;
 const EVENTS_API_TOKEN = process.env.EVENTS_API_TOKEN;
 
 const sendEvent = (postBody) => {
-        const token = EVENTS_API_TOKEN;;
 
-        var options = {
+        const options = {
             hostname: EVENTS_API_HOST,
             port: EVENTS_API_PORT,
             path: '/events',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
+                'Authorization': 'Bearer ' + EVENTS_API_TOKEN
             }
         };
 
         const postData = JSON.stringify(postBody);
 
-        var req = https.request(options, (res) => {
+        const req = https.request(options, (res) => {
             res.on('data', (d) => {
                 process.stdout.write(d);
             });
@@ -79,7 +78,7 @@ class PipelineEventHandler {
 
         let team_id = "";
         if (!pipeline_match) {
-            console.error("ERROR: Given AWS CodePipeline name does not have an associated Ops Team. Sending a blank team_id to Events API.");
+            console.error("Given AWS CodePipeline name does not have an associated Ops Team. Sending a blank team_id to Events API.");
         } else {
             team_id = pipeline_match.team_id;
         }
