@@ -89,7 +89,7 @@ class PipelineEventHandler {
         }
 
         const change_id = state.event.detail['execution-id'];
-        const payload = {};
+        const custom = {};
 
         // These if statements check the incoming event to see if they match
         // something we want to store. If there is no match, no Events API
@@ -98,11 +98,12 @@ class PipelineEventHandler {
         // Change Initiated event
         if (state.event['detail-type'] === STAGE_EVENT && state.event.detail.state === 'SUCCEEDED') {
             sendEvent({
-                event_name: "Change Initiated",
+                stage: "Change",
+                status: "Initiated",
                 change_id,
                 team_id,
                 pipeline_id,
-                payload
+                custom
             });
         }
 
@@ -110,19 +111,21 @@ class PipelineEventHandler {
         if (state.event['detail-type'] === PIPELINE_EVENT && state.event.detail.state === 'SUCCEEDED') {
 
             sendEvent({
-                event_name: "Change Completed",
+                stage: "Change",
+                status: "Completed",
                 change_id,
                 team_id,
                 pipeline_id,
-                payload
+                custom
             });
 
             sendEvent({
-                event_name: "Deployment Success",
+                stage: "Deployment",
+                status: "Succeeded",
                 change_id,
                 team_id,
                 pipeline_id,
-                payload
+                custom
             });
 
         }
@@ -131,11 +134,12 @@ class PipelineEventHandler {
         if (state.event['detail-type'] === PIPELINE_EVENT && state.event.detail.state === 'FAILED') {
 
             sendEvent({
-                event_name: "Deployment Failure",
+                stage: "Deployment",
+                status: "Failed",
                 change_id,
                 team_id,
                 pipeline_id,
-                payload
+                custom
             });
         }
 
