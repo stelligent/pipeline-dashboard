@@ -19,7 +19,7 @@ const sendEvent = (postBody) => {
         const options = {
             hostname: PIPELINE_DASHBOARD_EVENTS_API_HOST,
             port: PIPELINE_DASHBOARD_EVENTS_API_PORT,
-            path: '/events',
+            path: '/api/v1/events',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
