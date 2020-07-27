@@ -46,7 +46,7 @@ const sendEvent = (postBody) => {
 class PipelineEventHandler {
     run(eventPromise) {
         return eventPromise
-            .then(this.recordEvents)
+            //.then(this.recordEvents) // disable events API reports for now
             .then(this.initializeState)
             .then(this.handleFinalState)
             .then(this.handlePipelineGreenRedTime)
