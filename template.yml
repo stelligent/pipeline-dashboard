@@ -19,7 +19,7 @@ Resources:
     Properties:
       Description: Create CloudWatch metrics from CodePipeline events
       Handler: index.handlePipelineEvent
-      Runtime: nodejs12.x
+      Runtime: nodejs16.x
       CodeUri:
         Bucket: !Ref BucketName
         Key: !Ref CodeKey
@@ -43,7 +43,7 @@ Resources:
     Properties:
       Description: Build CloudWatch dashboard from CloudWatch metrics
       Handler: index.generateDashboard
-      Runtime: nodejs12.x
+      Runtime: nodejs16.x
       CodeUri:
         Bucket: !Ref BucketName
         Key: !Ref CodeKey
